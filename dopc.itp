@@ -1,0 +1,67 @@
+[ moleculetype ]
+; molname      nrexcl
+DOPC		2
+
+[ atoms ]
+;id  at type  resnr  resname	atname    cg    charge
+1    CH	      1       HEAD      CH        1     0.0
+2    PH	      1       HEAD      PH        2     0.0
+3    GL	      1       HEAD      GL        3     0.0
+4    E1	      2       ARM1      ES1       4     0.0
+5    AS	      2       ARM1      AS11      5     0.0
+6    AS	      2       ARM1      AS12      6     0.0
+7    AD	      2       ARM1      AD13      7     0.0
+8    AS	      2       ARM1      AS14      8     0.0
+9    AS	      2       ARM1      AS15      9     0.0
+10   AE	      3       ARM2      AE16      10    0.0
+11   E2	      3       ARM2      ES2       11    0.0
+12   AS	      3       ARM2      AS21      12    0.0
+13   AS	      3       ARM2      AS22      13    0.0
+14   AD	      3       ARM2      AD23      14    0.0
+15   AS	      3       ARM2      AS24      15    0.0
+16   AS	      3       ARM2      AS25      16    0.0
+17   AE       3       ARM2      AE26      17    0.0
+
+[ bonds ]
+; i	j	type
+;head	
+  1     2       8
+  2     3       8
+;arm1
+  3     4       8
+  4     5       8
+  5     6       8
+  6     7       8
+  7     8       8
+  8     9       8
+  9     10      8
+;arm2
+  3     11      8
+  11    12      8
+  12    13      8
+  13    14      8
+  14    15      8
+  15    16      8
+  16    17      8
+
+; effective angles
+; i      k     type     tabnr      k
+;head
+  1      3     9
+  2      4     9
+  2      11    9
+  4      11    9
+;arm1
+  3      5     9        18         1.0  ;GL-E1-AS
+  4      6     9
+  5      7     9
+  6      8     9        20         1.0  ;AS-AD-AS
+  7      9     9
+  8      10    9
+;arm2
+  3      12    9        19         1.0  ;GL-E2-AS
+ 11      13    9
+ 12      14    9
+ 13      15    9        20         1.0  ;AS-AD-AS
+ 14      16    9
+ 15      17    9

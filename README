@@ -1,0 +1,124 @@
+Tristan Bereau, Aug. 9, 2011.
+
+
+                    PLUM forcefield in Gromacs
+                          Deserno group
+            Dept. of Physics, Carnegie Mellon University
+                  Pittsburgh, PA 15232, USA
+
+References:
+==========
+
+ * Lipid force field: 
+[1] Z.-J. Wang and M. Deserno, J. Phys. Chem. B 184, 351-363 (2010).
+
+ * Peptide force field: 
+[2] T. Bereau and M. Deserno, J. Chem. Phys. 130, 235106 (2009).
+
+ * Protein-Lipid interactions:
+[3] T. Bereau, Unconstrained Structure Formation in Coarse-Grained Protein
+               Simulations, Chapter 6, Ph.D. thesis (2011)
+
+
+Gromacs Setup:
+=============
+
+(Note: the following instructions have only been tested on Gromacs 4.5.4.
+       Readjustments in different versions may be necessary.)
+
+ * In the Gromacs directory, replace the charge-group--charge-group kernel
+   src/gmxlib/nonbonded/nb_generic_cg.c by the file included in this archive.
+   It contains the implementation of the hydrogen-bond interaction as
+   described in [1].
+
+ * In the Gromacs directory, open src/mdlib/ns.c.  Around line 322, comment
+   out the line:
+     
+    gmx_fatal(FARGS,"The charge-group - charge-group force loops only \
+     support systems with all intra-cg interactions excluded and no inter-cg \
+     exclusions, this is not the case for this system.");
+
+ * recompile Gromacs
+
+Simulation setup:
+================
+
+ * Copy plum_tables/*.xvg into simulation directory.
+
+ * Write protein sequence file protein.seq: 1 protein per line, all 1-letter
+   amino acid codes, no spaces between letters.  Example: 15-residue
+   polyalanine:
+
+   AAAAAAAAAAAAAAA
+
+   See also WALP peptide in example directory: popc72_walp/walp.seq.  Special
+   amino acid codes:
+   - Z: end cap (N-terminal or C-terminal group)
+   - B: Arginine [+]; (neutral arginine is R)
+   - J: Aspartic acid [-]; (neutral aspartic acid is D)
+   - O: Glutamic acid [-]; (neutral glutamic acid is E)
+   - U: Lysine [+]; (neutral lysine is K)
+
+ * Copy lipid force field file(s) (i.e., {dopc,popc,dppc}.itp) and plum.itp to
+   simulation directory.
+
+ * Generate protein force field file by using script:
+   
+   ./plum_prot_gen_itp.pl protein.seq > prot.itp
+
+ * Write topology file topol.top which combines the lipid, protein, and plum
+   .itp files.  (See example file: popc72_walp/topol.top).
+
+ * Generate .gro file from a pdb structure which contains the lipid and
+   protein coordinates (concatenated) from the script
+
+   ./pdb2gro.sh initial.pdb Lx Ly Lz
+
+   where initial.pdb is the pdb structure, and Lx, Ly, and Lz are the three
+   box sizes (in nm) in the x, y, and z directions, respectively.
+
+   Note 1: an atomistic protein can simply be coarse-grained by using the
+   script 
+
+   ./pdb_aa2cg.sh protein.pdb
+
+   Note 2: pdb2gmx does _not_ work with PLUM because the residue database has
+   not yet been implemented (see .rtp files in the Gromacs manual).
+
+ * Copy grompp.mdp file from example directory popc72_walp.  Use the script
+
+   ./gen_energygrp.sh protein.seq 
+
+   to generate 'energygrps' and 'energygrp_table' variables.  Insert script
+   output in grompp.mdp file.  Make sure the 'userint{1,2,3}' variables are
+   set as in the popc72_walp example (they are required for proper Hbond
+   calculation).  Also, do not change the order of [atomtypes] in plum.itp
+   file (the userint{2,3} variables correspond to the atomtypes of beads HBN
+   and HBC, hydrogen-bonding capable amide and carbonyl groups).
+
+ * Generate index file index.ndx from .gro file:
+
+   ./gen_ndx.sh conf.gro
+
+ * Export environment variable GMX_NBLISTCG (see file 'source.me') to activate
+   charge-group--charge-group kernel (this includes the Hbond interaction):
+
+   source source.me
+
+   Note: in case of lipid-only simulation (i.e., no protein), it is best _not_
+   to export GMX_NBLISTCG (or, alternatively, to set as 0) which is only
+   required when the charge-group--charge-group kernel needs to use the C code
+   (i.e., where the Hbond interaction is implemented).  This will speed up
+   performance. 
+
+ * The grompp command requires the following files: mdp, gro, top, ndx, and
+   the option -norenum to prevent reordering of the atomtypes (because of the
+   Hbond potential):
+
+   grompp -f grompp.mdp -c conf.gro -p topol.top -n index.ndx -norenum
+
+   Note: the example directory popc72_walp contains all the necessary files
+   for a PLUM simulation in Gromacs of that system.
+
+ * mdrun -v
+

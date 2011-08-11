@@ -1,0 +1,13 @@
+#include "plum.itp"
+#include "prot.itp"
+#include "popc.itp"
+
+[ system ]
+; name
+popc72_walp
+
+[ molecules ]
+; name  number
+POPC    72
+Protein 1
+
