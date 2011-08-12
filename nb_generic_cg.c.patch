@@ -1,0 +1,169 @@
+diff --git a/src/gmxlib/nonbonded/nb_generic_cg.c b/src/gmxlib/nonbonded/nb_generic_cg.c
+index 400866f..5779173 100644
+--- a/src/gmxlib/nonbonded/nb_generic_cg.c
++++ b/src/gmxlib/nonbonded/nb_generic_cg.c
+@@ -83,6 +83,23 @@
+      int *         shift;
+      int *         type;
+      t_excl *      excl;
++
++     int           ljangle_switch;
++     int           ljangle_type1;
++     int           ljangle_type2;
++     real          ipx,ipy,ipz;
++     real          jpx,jpy,jpz;
++     int           ip3, jp3;
++     real          d_iip_x,d_iip_y,d_iip_z;
++     real          d_jjp_x,d_jjp_y,d_jjp_z;
++     real          r_iip_sq,r_jjp_sq;
++     real          r_iip_inv,r_jjp_inv;
++     real          scalar_iipij,scalar_jjpji;
++     real          cos_theta1,cos_theta1_sq,cos_theta1_pr;
++     real          cos_theta2,cos_theta2_sq,cos_theta2_pr;
++     real          radial_fac,radial_fac_prime;
++     real          f_ljangle_1,f_ljangle_2,f_ljangle_3;
++     real          ljangle_cap;
+        
+      icoul               = nlist->icoul;
+      ivdw                = nlist->ivdw;
+@@ -104,6 +121,11 @@
+      shiftvec            = fr->shift_vec[0];
+      vdwparam            = fr->nbfp;
+      ntype               = fr->ntype;
++
++     ljangle_switch      = fr->userint1;
++     ljangle_type1       = fr->userint2;
++     ljangle_type2       = fr->userint3;
++     ljangle_cap         = 5000.;
+      
+      for(n=0; (n<nlist->nri); n++)
+      {
+@@ -223,6 +245,120 @@
+                      if (ivdw > 0)
+                      {
+                          tj               = nti+nvdwparam*type[aj];
++
++                         /* Angular Lennard-Jones interaction */
++                         /* Look for ljangle_type1 and ljangle_type2 */
++                         if (ljangle_switch == 9999 && ((type[ai] == ljangle_type1 && type[aj] == ljangle_type2) ||
++                                                        (type[ai] == ljangle_type2 && type[aj] == ljangle_type1))) 
++                         {
++                             /* Assume virtual sites have ID ai+1 and aj+1.
++                              * Retrieve particle positions. */
++                             ip3              = (ai+1)*3;
++                             ipx              = x[ip3+0];
++                             ipy              = x[ip3+1];
++                             ipz              = x[ip3+2];
++                             d_iip_x          = ix - ipx;
++                             d_iip_y          = iy - ipy;
++                             d_iip_z          = iz - ipz;
++                             r_iip_sq         = d_iip_x*d_iip_x+d_iip_y*d_iip_y+d_iip_z*d_iip_z;
++                             r_iip_inv        = gmx_invsqrt(r_iip_sq);
++
++                             jp3              = (aj+1)*3;
++                             jpx              = x[jp3+0];
++                             jpy              = x[jp3+1];
++                             jpz              = x[jp3+2];
++                             d_jjp_x          = jx - jpx;
++                             d_jjp_y          = jy - jpy;
++                             d_jjp_z          = jz - jpz;
++                             r_jjp_sq         = d_jjp_x*d_jjp_x+d_jjp_y*d_jjp_y+d_jjp_z*d_jjp_z;
++                             r_jjp_inv        = gmx_invsqrt(r_jjp_sq);
++
++                             /* Calculate two cos angles of theta1 (ip,i,j) and theta2(i,j,jp) */
++                             scalar_iipij     = d_iip_x*dx+d_iip_y*dy+d_iip_z*dz;
++                             cos_theta1       = scalar_iipij*r_iip_inv*rinv;
++
++                             scalar_jjpji     = -d_jjp_x*dx-d_jjp_y*dy-d_jjp_z*dz;
++                             cos_theta2       = scalar_jjpji*r_jjp_inv*rinv;
++                                 
++                             /* Condition: angles smaller than 90deg. */
++                             if (cos_theta1 > 0. && cos_theta2 > 0.)
++                             {
++                                 cos_theta1_sq    = sqr(cos_theta1);
++                                 cos_theta1_pr    = -2.0*cos_theta1;
++                                 cos_theta2_sq    = sqr(cos_theta2);
++                                 cos_theta2_pr    = -2.0*cos_theta2;
++                                     
++                                 /* Use vanilla Lennard-Jones coefficients for ljangle interaction. */
++                                 c6               = vdwparam[tj];
++                                 c12              = vdwparam[tj+1];
++
++                                 /* Ljangle is a 12-10 interaction. */
++                                 rinvsix          = rinvsq*rinvsq*rinvsq;
++                                 Vvdw_disp        = c6*rinvsix*rinvsq*rinvsq;
++                                 Vvdw_rep         = c12*rinvsix*rinvsix;
++                                 radial_fac       = Vvdw_rep-Vvdw_disp;
++                                 /* Cap radial_fac to ljangle_cap. */
++                                 if (radial_fac > ljangle_cap)
++                                     radial_fac = ljangle_cap;
++                                 Vvdwtot          = Vvdwtot+radial_fac*cos_theta1_sq*cos_theta2_sq;
++                                 /* printf("ljangle: %3d-%3d: %6.2f - rad %6.5f - rinv %6.5f %6.5f - coeffs %6.5f %6.5f - rsq %6.5f - c %6.5f %6.5f\n",
++                                    ai,aj,Vvdwtot,radial_fac,rinvsq,rinvsix,Vvdw_rep,Vvdw_disp,rsq,c6,c12); */
++                                 radial_fac_prime = (10.0*Vvdw_disp-12.0*Vvdw_rep)*rinv;
++                                 /* Update forces for all 4 particles.
++                                  * f_ljangle_X correspond to different
++                                  * terms in the force expression. */
++                                 f_ljangle_1      = cos_theta1_sq*cos_theta2_sq*radial_fac_prime*rinv;
++                                 f_ljangle_2      = cos_theta2_sq*cos_theta1_pr*radial_fac;
++                                 f_ljangle_3      = cos_theta1_sq*cos_theta2_pr*radial_fac;
++                                 /* particle i */
++                                 f[i3+0]         += 
++                                     f_ljangle_1*(-dx) +
++                                     f_ljangle_2*( (dx+d_iip_x)*rinv*r_iip_inv -
++                                                   cos_theta1*(d_iip_x*r_iip_inv*r_iip_inv + dx*rinvsq) ) -
++                                     f_ljangle_3*(d_jjp_x*rinv*r_jjp_inv + cos_theta2*dx*rinvsq);
++                                 f[i3+1]         += 
++                                     f_ljangle_1*(-dy) +
++                                     f_ljangle_2*( (dy+d_iip_y)*rinv*r_iip_inv -
++                                                   cos_theta1*(d_iip_y*r_iip_inv*r_iip_inv + dy*rinvsq) ) -
++                                     f_ljangle_3*(d_jjp_y*rinv*r_jjp_inv + cos_theta2*dy*rinvsq);
++                                 f[i3+2]         += 
++                                     f_ljangle_1*(-dz) +
++                                     f_ljangle_2*( (dz+d_iip_z)*rinv*r_iip_inv -
++                                                   cos_theta1*(d_iip_z*r_iip_inv*r_iip_inv + dz*rinvsq) ) -
++                                     f_ljangle_3*(d_jjp_z*rinv*r_jjp_inv + cos_theta2*dz*rinvsq);
++                                 /* particle j */
++                                 f[j3+0]         += 
++                                     f_ljangle_1*dx +
++                                     f_ljangle_2*( -d_iip_x*rinv*r_iip_inv + cos_theta1*dx*rinvsq ) +
++                                     f_ljangle_3*( (-dx+d_jjp_x)*rinv*r_jjp_inv + 
++                                                   cos_theta2*(-d_jjp_x*r_jjp_inv*r_jjp_inv + dx*rinvsq) );
++                                 f[j3+1]         += 
++                                     f_ljangle_1*dy +
++                                     f_ljangle_2*( -d_iip_y*rinv*r_iip_inv + cos_theta1*dy*rinvsq ) +
++                                     f_ljangle_3*( (-dy+d_jjp_y)*rinv*r_jjp_inv + 
++                                                   cos_theta2*(-d_jjp_y*r_jjp_inv*r_jjp_inv + dy*rinvsq) );
++                                 f[j3+2]         += 
++                                     f_ljangle_1*dz +
++                                     f_ljangle_2*( -d_iip_z*rinv*r_iip_inv + cos_theta1*dz*rinvsq ) +
++                                     f_ljangle_3*( (-dz+d_jjp_z)*rinv*r_jjp_inv + 
++                                                   cos_theta2*(-d_jjp_z*r_jjp_inv*r_jjp_inv + dz*rinvsq) );
++                                 /* particle ip */
++                                 f[ip3+0]        +=
++                                     f_ljangle_2*(-dx*rinv*r_iip_inv + cos_theta1*d_iip_x*r_iip_inv*r_iip_inv);
++                                 f[ip3+1]        +=
++                                     f_ljangle_2*(-dy*rinv*r_iip_inv + cos_theta1*d_iip_y*r_iip_inv*r_iip_inv);
++                                 f[ip3+2]        +=
++                                     f_ljangle_2*(-dz*rinv*r_iip_inv + cos_theta1*d_iip_z*r_iip_inv*r_iip_inv);
++                                 /* particle jp */
++                                 f[jp3+0]        +=
++                                     f_ljangle_3*(dx*rinv*r_jjp_inv + cos_theta2*d_jjp_x*r_jjp_inv*r_jjp_inv);
++                                 f[jp3+1]        +=
++                                     f_ljangle_3*(dy*rinv*r_jjp_inv + cos_theta2*d_jjp_y*r_jjp_inv*r_jjp_inv);
++                                 f[jp3+2]        +=
++                                     f_ljangle_3*(dz*rinv*r_jjp_inv + cos_theta2*d_jjp_z*r_jjp_inv*r_jjp_inv);
++                                     
++                             }
++                         } else { 
+                          
+                          switch(ivdw)
+                          {
+@@ -284,6 +420,7 @@
+                              gmx_fatal(FARGS,"Death & horror! No generic VdW interaction for ivdw=%d.\n",ivdw);
+                              break;
+                          }
++                         }   
+                      } /* end VdW interactions */
+                      
+                      

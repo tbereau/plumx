@@ -23,8 +23,21 @@ References:
 Gromacs Setup:
 =============
 
-(Note: the following instructions have only been tested on Gromacs 4.5.4.
-       Readjustments in different versions may be necessary.)
+in case of Gromacs 4.5.5:
+
+ * Replace the charge-group--charge-group kernel to add an implementation of
+   he hydrogen-bond interaction as described in [1]. 
+   To do so one can either apply the nb_generic_cg.c.patch to your gromacs source:
+
+   cd path/to/gromacs
+   patch -p1 <nb_generic_cg.c.patch
+
+   or replace the charge-group--charge-group kernel in
+   src/gmxlib/nonbonded/nb_generic_cg.c by the file included in this archive.
+
+ * recompile Gromacs
+
+in case of Gromacs 4.5.4:
 
  * In the Gromacs directory, replace the charge-group--charge-group kernel
    src/gmxlib/nonbonded/nb_generic_cg.c by the file included in this archive.
