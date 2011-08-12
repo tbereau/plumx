@@ -359,66 +359,67 @@
                                      
                              }
                          } else { 
-                             switch(ivdw)
-                             {
-                             case 1:
-                                 /* Vanilla Lennard-Jones cutoff */
-                                 c6               = vdwparam[tj];   
-                                 c12              = vdwparam[tj+1]; 
-                                 
-                                 rinvsix          = rinvsq*rinvsq*rinvsq;
-                                 Vvdw_disp        = c6*rinvsix;     
-                                 Vvdw_rep         = c12*rinvsix*rinvsix;
-                                 fscal           += (12.0*Vvdw_rep-6.0*Vvdw_disp)*rinvsq;
-                                 Vvdwtot          = Vvdwtot+Vvdw_rep-Vvdw_disp;
-                                 break;
+                         
+                         switch(ivdw)
+                         {
+                         case 1:
+                             /* Vanilla Lennard-Jones cutoff */
+                             c6               = vdwparam[tj];   
+                             c12              = vdwparam[tj+1]; 
                              
-                             case 2:
-                                 /* Buckingham */
-                                 c6               = vdwparam[tj];   
-                                 cexp1            = vdwparam[tj+1]; 
-                                 cexp2            = vdwparam[tj+2]; 
+                             rinvsix          = rinvsq*rinvsq*rinvsq;
+                             Vvdw_disp        = c6*rinvsix;     
+                             Vvdw_rep         = c12*rinvsix*rinvsix;
+                             fscal           += (12.0*Vvdw_rep-6.0*Vvdw_disp)*rinvsq;
+                             Vvdwtot          = Vvdwtot+Vvdw_rep-Vvdw_disp;
+                             break;
                              
-                                 rinvsix          = rinvsq*rinvsq*rinvsq;
-                                 Vvdw_disp        = c6*rinvsix;     
-                                 br               = cexp2*rsq*rinv;
-                                 Vvdw_rep         = cexp1*exp(-br); 
-                                 fscal           += (br*Vvdw_rep-6.0*Vvdw_disp)*rinvsq;
-                                 Vvdwtot          = Vvdwtot+Vvdw_rep-Vvdw_disp;
-                                 break;
+                         case 2:
+                             /* Buckingham */
+                             c6               = vdwparam[tj];   
+                             cexp1            = vdwparam[tj+1]; 
+                             cexp2            = vdwparam[tj+2]; 
                              
-                             case 3:
-                                 /* Tabulated VdW */
-                                 c6               = vdwparam[tj];   
-                                 c12              = vdwparam[tj+1]; 
+                             rinvsix          = rinvsq*rinvsq*rinvsq;
+                             Vvdw_disp        = c6*rinvsix;     
+                             br               = cexp2*rsq*rinv;
+                             Vvdw_rep         = cexp1*exp(-br); 
+                             fscal           += (br*Vvdw_rep-6.0*Vvdw_disp)*rinvsq;
+                             Vvdwtot          = Vvdwtot+Vvdw_rep-Vvdw_disp;
+                             break;
                              
-                                 Y                = VFtab[nnn];     
-                                 F                = VFtab[nnn+1];   
-                                 Geps             = eps*VFtab[nnn+2];
-                                 Heps2            = eps2*VFtab[nnn+3];
-                                 Fp               = F+Geps+Heps2;   
-                                 VV               = Y+eps*Fp;       
-                                 FF               = Fp+Geps+2.0*Heps2;
-                                 Vvdw_disp        = c6*VV;          
-                                 fijD             = c6*FF;          
-                                 nnn             += 4;          
-                                 Y                = VFtab[nnn];     
-                                 F                = VFtab[nnn+1];   
-                                 Geps             = eps*VFtab[nnn+2];
-                                 Heps2            = eps2*VFtab[nnn+3];
-                                 Fp               = F+Geps+Heps2;   
-                                 VV               = Y+eps*Fp;       
-                                 FF               = Fp+Geps+2.0*Heps2;
-                                 Vvdw_rep         = c12*VV;         
-                                 fijR             = c12*FF;         
-                                 fscal           += -(fijD+fijR)*tabscale*rinv;
-                                 Vvdwtot          = Vvdwtot + Vvdw_disp + Vvdw_rep;						
-                                 break;
+                         case 3:
+                             /* Tabulated VdW */
+                             c6               = vdwparam[tj];   
+                             c12              = vdwparam[tj+1]; 
                              
-                             default:
-                                 gmx_fatal(FARGS,"Death & horror! No generic VdW interaction for ivdw=%d.\n",ivdw);
-                                 break;
-                             }
+                             Y                = VFtab[nnn];     
+                             F                = VFtab[nnn+1];   
+                             Geps             = eps*VFtab[nnn+2];
+                             Heps2            = eps2*VFtab[nnn+3];
+                             Fp               = F+Geps+Heps2;   
+                             VV               = Y+eps*Fp;       
+                             FF               = Fp+Geps+2.0*Heps2;
+                             Vvdw_disp        = c6*VV;          
+                             fijD             = c6*FF;          
+                             nnn             += 4;          
+                             Y                = VFtab[nnn];     
+                             F                = VFtab[nnn+1];   
+                             Geps             = eps*VFtab[nnn+2];
+                             Heps2            = eps2*VFtab[nnn+3];
+                             Fp               = F+Geps+Heps2;   
+                             VV               = Y+eps*Fp;       
+                             FF               = Fp+Geps+2.0*Heps2;
+                             Vvdw_rep         = c12*VV;         
+                             fijR             = c12*FF;         
+                             fscal           += -(fijD+fijR)*tabscale*rinv;
+                             Vvdwtot          = Vvdwtot + Vvdw_disp + Vvdw_rep;						
+                             break;
+                             
+                         default:
+                             gmx_fatal(FARGS,"Death & horror! No generic VdW interaction for ivdw=%d.\n",ivdw);
+                             break;
+                         }
                          }   
                      } /* end VdW interactions */
                      
@@ -450,3 +451,4 @@
      *outeriter       = nlist->nri;            
      *inneriter       = nlist->jindex[n];          	
 }
+
