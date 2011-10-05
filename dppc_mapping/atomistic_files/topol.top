@@ -1,0 +1,24 @@
+; Include forcefield parameters
+#include "gromos53a6.ff/forcefield.itp"
+
+; Include dppc topology
+#include "dppc_53a6.itp"
+
+; Include water topology
+#include "gromos53a6.ff/spc.itp"
+
+#ifdef POSRES_WATER
+; Position restraint for each water oxygen
+[ position_restraints ]
+;  i funct       fcx        fcy        fcz
+   1    1       1000       1000       1000
+#endif
+
+[ system ]
+; Name
+Lipid in water
+
+[ molecules ]
+; Compound        #mols
+DPPC	128
+SOL	3655

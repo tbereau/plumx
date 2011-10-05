@@ -1,13 +1,31 @@
-Example files for mapping DPPC lipids from an atomistic trajectory using the VOTCA package (www.votca.org)
+# The .pdb files contain a snapshot of the lipid bilayer after 40 ns of MD simulation.
+# The .itp files contain the molecular topology for the GROMOS96 53a6 force field.
+# They are suitable for use with the GROMACS MD simulation software.
+# 
+# All details about the MD simulation conditions and topologies are in the manuscript.
+# 
+# Please cite:
+# 
+# Kukol, A (2009), Lipid Models for United-Atom Molecular Dynamics Simulations of Proteins, 
+# J Chem Theo Comput, available from http://pubs.acs.org/journal/jctcce, DOI: 10.1021/ct8003468
+
+
+Example files for mapping DPPC lipids from an atomistic trajectory with VOTCA (votca.org)
+
 Files:
-confout.pdb - atomistic file with protein, pigment molecules, solvent, ions and DPPC membrane
-topol.tpr - atomistic topology file
-dppc.xml - mapping scheme of DPPC for VOTCA
-dppc.pdb - coarse grained lipids mapped by VOTCA
-grompp.mdp - gromacs mdp file with energy groups for lipids
+  atomistic_files:
+    dppc128_after_40ns.pdb and dppc128_after_40ns.gro - atomistic files with solvated DPPC membrane
+    topol.top - general topology file
+    dppc_53a6.itp - dppc topology file
+    topol.tpr - binary atomistic topology file
+    em_steep - gromacs energy minimization mdp file 
+  coarse graining files:
+    dppc.xml - mapping scheme of DPPC for VOTCA
+    dppc.pdb - coarse grained lipids mapped by VOTCA
+    grompp.mdp - gromacs mdp file with energy groups for lipids
 
 Command line for mapping of the atomistic lipids to the coarse grained representation
 
-csg_map --top topol.tpr --out dppc.pdb --cg dppc.xml --trj confout.pdb --map-ignore "SOL;LUT;NA+;CLA;CHL;Protein_A;Protein_B;Protein_C"
+csg_map --top atomistic_files/topol.tpr --out dppc.pdb --cg dppc.xml --trj dppc128_after_40ns.pdb --map-ignore "SOL"
 
 --map-ignore - list to to skip warnings about another molecules present in the atomistic file but not defined in the VOTCA mapping file

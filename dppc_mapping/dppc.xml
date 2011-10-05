@@ -19,7 +19,7 @@
         <name>GL</name>
         <type>GL</type>
         <mapping>GL</mapping>
-        <beads> 1:DPPC:C3 1:DPPC:C2 1:DPPC:C216 </beads>
+        <beads> 1:DPPC:C3 1:DPPC:C2 1:DPPC:C1 </beads>
       </cg_bead>
       <cg_bead>
         <name>ES1</name>
@@ -55,7 +55,7 @@
         <name>AE15</name>
         <type>AE</type>
         <mapping>AE</mapping>
-        <beads> 1:DPPC:C215 1:DPPC:C1 </beads>
+        <beads> 1:DPPC:C215 1:DPPC:C216 </beads>
       </cg_bead>
       <cg_bead>
         <name>ES2</name>
