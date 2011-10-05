@@ -1,0 +1,13 @@
+Example files for mapping DPPC lipids from an atomistic trajectory using the VOTCA package (www.votca.org)
+Files:
+confout.pdb - atomistic file with protein, pigment molecules, solvent, ions and DPPC membrane
+topol.tpr - atomistic topology file
+dppc.xml - mapping scheme of DPPC for VOTCA
+dppc.pdb - coarse grained lipids mapped by VOTCA
+grompp.mdp - gromacs mdp file with energy groups for lipids
+
+Command line for mapping of the atomistic lipids to the coarse grained representation
+
+csg_map --top topol.tpr --out dppc.pdb --cg dppc.xml --trj confout.pdb --map-ignore "SOL;LUT;NA+;CLA;CHL;Protein_A;Protein_B;Protein_C"
+
+--map-ignore - list to to skip warnings about another molecules present in the atomistic file but not defined in the VOTCA mapping file

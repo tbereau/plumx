@@ -1,0 +1,219 @@
+<cg_molecule>
+  <name>DPPC</name>
+  <ident>DPPC</ident>
+  <topology>
+    <cg_beads>
+      <cg_bead>
+        <name>CH</name>
+        <type>CH</type>
+        <mapping>N</mapping>
+        <beads>1:HEAD:CH</beads>
+      </cg_bead>
+      <cg_bead>
+        <name>PH</name>
+        <type>PH</type>
+        <mapping>N</mapping>
+        <beads>1:HEAD:PH</beads>
+      </cg_bead>
+      <cg_bead>
+        <name>GL</name>
+        <type>GL</type>
+        <mapping>N</mapping>
+        <beads>1:HEAD:GL</beads>
+      </cg_bead>
+      <cg_bead>
+        <name>ES1</name>
+        <type>ES1</type>
+        <mapping>N</mapping>
+        <beads>2:ARM1:ES1</beads>
+      </cg_bead>
+      <cg_bead>
+        <name>AS11</name>
+        <type>AS11</type>
+        <mapping>N</mapping>
+        <beads>2:ARM1:AS11</beads>
+      </cg_bead>
+      <cg_bead>
+        <name>AS12</name>
+        <type>AS12</type>
+        <mapping>N</mapping>
+        <beads>2:ARM1:AS12</beads>
+      </cg_bead>
+      <cg_bead>
+        <name>AS13</name>
+        <type>AS13</type>
+        <mapping>N</mapping>
+        <beads>2:ARM1:AS13</beads>
+      </cg_bead>
+      <cg_bead>
+        <name>AS14</name>
+        <type>AS14</type>
+        <mapping>N</mapping>
+        <beads>2:ARM1:AS14</beads>
+      </cg_bead>
+      <cg_bead>
+        <name>AE15</name>
+        <type>AE15</type>
+        <mapping>N</mapping>
+        <beads>2:ARM1:AE15</beads>
+      </cg_bead>
+      <cg_bead>
+        <name>ES2</name>
+        <type>ES2</type>
+        <mapping>N</mapping>
+        <beads>3:ARM2:ES2</beads>
+      </cg_bead>
+      <cg_bead>
+        <name>AS21</name>
+        <type>AS21</type>
+        <mapping>N</mapping>
+        <beads>3:ARM2:AS21</beads>
+      </cg_bead>
+      <cg_bead>
+        <name>AS22</name>
+        <type>AS22</type>
+        <mapping>N</mapping>
+        <beads>3:ARM2:AS22</beads>
+      </cg_bead>
+      <cg_bead>
+        <name>AS23</name>
+        <type>AS23</type>
+        <mapping>N</mapping>
+        <beads>3:ARM2:AS23</beads>
+      </cg_bead>
+      <cg_bead>
+        <name>AS24</name>
+        <type>AS24</type>
+        <mapping>N</mapping>
+        <beads>3:ARM2:AS24</beads>
+      </cg_bead>
+      <cg_bead>
+        <name>AE25</name>
+        <type>AE25</type>
+        <mapping>N</mapping>
+        <beads>3:ARM2:AE25</beads>
+      </cg_bead>
+  </cg_beads>
+  <cg_bonded>
+    <bond>
+      <name>CH-PH</name>
+      <beads>CH PH</beads>
+    </bond>
+    <bond>
+      <name>PH-GL</name>
+      <beads>PH GL</beads>
+    </bond>
+    <bond>
+      <name>GL-ES1</name>
+      <beads>GL ES1</beads>
+    </bond>
+    <bond>
+      <name>ES1-AS11</name>
+      <beads>ES1 AS11</beads>
+    </bond>
+    <bond>
+      <name>AS11-AS12</name>
+      <beads>AS11 AS12</beads>
+    </bond>
+    <bond>
+      <name>AS12-AS13</name>
+      <beads>AS12 AS13</beads>
+    </bond>
+    <bond>
+      <name>AS13-AS14</name>
+      <beads>AS13 AS14</beads>
+    </bond>
+    <bond>
+      <name>AS14-AE15</name>
+      <beads>AS14 AE15</beads>
+    </bond>
+    <bond>
+      <name>GL-ES2</name>
+      <beads>GL ES2</beads>
+    </bond>
+    <bond>
+      <name>ES2-AS21</name>
+      <beads>ES2 AS21</beads>
+    </bond>
+    <bond>
+      <name>AS21-AS22</name>
+      <beads>AS21 AS22</beads>
+    </bond>
+    <bond>
+      <name>AS22-AS23</name>
+      <beads>AS22 AS23</beads>
+    </bond>
+    <bond>
+      <name>AS23-AS24</name>
+      <beads>AS23 AS24</beads>
+    </bond>
+    <bond>
+      <name>AS24-AE25</name>
+      <beads>AS24 AE25</beads>
+    </bond>
+    <!-- effective angles -->
+    <bond>
+      <name>CH-PH-GL</name>
+      <beads>CH GL</beads>
+    </bond>
+    <bond>
+      <name>PH-GL-ES1</name>
+      <beads>PH ES1</beads>
+    </bond>
+    <bond>
+      <name>PH-GL-ES2</name>
+      <beads>PH ES2</beads>
+    </bond>
+    <bond>
+      <name>GL-ES1-AS11</name>
+      <beads>GL AS11</beads>
+    </bond>
+    <bond>
+      <name>GL-ES2-AS12</name>
+      <beads>GL AS12</beads>
+    </bond>
+    <bond>
+      <name>ES1-AS11-AS12</name>
+      <beads>ES1 AS12</beads>
+    </bond>
+    <bond>
+      <name>ES1-GL-ES2</name>
+      <beads>ES1 ES2</beads>
+    </bond>
+    <bond>
+      <name>AS11-AS12-AS13</name>
+      <beads>AS11 AS13</beads>
+    </bond>
+    <bond>
+      <name>AS12-AS13-AS14</name>
+      <beads>AS12 AS14</beads>
+    </bond>
+    <bond>
+      <name>AS13-AS14-AE15</name>
+      <beads>AS13 AE15</beads>
+    </bond>
+    <bond>
+      <name>ES2-AS21-AS22</name>
+      <beads>ES2 AS22</beads>
+    </bond>
+    <bond>
+      <name>AS21-AS22-AS23</name>
+      <beads>AS21 AS23</beads>
+    </bond>
+    <bond>
+      <name>AS22-AS23-AS24</name>
+      <beads>AS22 AS24</beads>
+    </bond>
+    <bond>
+      <name>AS23-AS24-AE25</name>
+      <beads>AS23 AE25</beads>
+    </bond>
+  </cg_bonded>
+  </topology>
+  <maps>
+    <map>
+      <name>N</name>
+      <weights>1</weights>
+    </map>
+  </maps>
+</cg_molecule>
