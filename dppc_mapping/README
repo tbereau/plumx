@@ -14,18 +14,23 @@ Example files for mapping DPPC lipids from an atomistic trajectory with VOTCA (v
 
 Files:
   atomistic_files:
-    dppc128_after_40ns.pdb and dppc128_after_40ns.gro - atomistic files with solvated DPPC membrane
+    dppc128_after_40ns.gro - atomistic files with solvated DPPC membrane
     topol.top - general topology file
     dppc_53a6.itp - dppc topology file
     topol.tpr - binary atomistic topology file
-    em_steep - gromacs energy minimization mdp file 
+    em_steep.mdp - gromacs energy minimization mdp file 
   coarse graining files:
     dppc.xml - mapping scheme of DPPC for VOTCA
     dppc.pdb - coarse grained lipids mapped by VOTCA
     grompp.mdp - gromacs mdp file with energy groups for lipids
 
-Command line for mapping of the atomistic lipids to the coarse grained representation
+# Command line for creating atomostic topology file
+# change to atomistic_files directory
 
-csg_map --top atomistic_files/topol.tpr --out dppc.pdb --cg dppc.xml --trj dppc128_after_40ns.pdb --map-ignore "SOL"
+grompp -f em_steep.mdp -c dppc128_after_40ns.gro -p topol.top -o topol.tpr
 
---map-ignore - list to to skip warnings about another molecules present in the atomistic file but not defined in the VOTCA mapping file
+# Command line for mapping of the atomistic lipids to the coarse grained representation
+
+csg_map --top atomistic_files/topol.tpr --out dppc.pdb --cg dppc.xml --trj atomistic_files/dppc128_after_40ns.gro --map-ignore "SOL"
+
+# --map-ignore - list to to skip warnings about another molecules present in the atomistic file but not defined in the VOTCA mapping file
