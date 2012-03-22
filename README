@@ -23,6 +23,10 @@ References:
 Gromacs Setup:
 =============
 
+Please note that the following steps are NOT necessary if you want to use the
+Lipid force field [1] alone. The special kernel is needed for the Peptide [2] and the
+Protein-Lipid part [3] of the force field.
+
 in case of Gromacs 4.5.5:
 
  * Replace the charge-group--charge-group kernel to add an implementation of
@@ -50,6 +54,8 @@ in case of Gromacs 4.5.4:
     gmx_fatal(FARGS,"The charge-group - charge-group force loops only \
      support systems with all intra-cg interactions excluded and no inter-cg \
      exclusions, this is not the case for this system.");
+
+   This problem has been solved in Gromacs 4.5.5 and above.
 
  * recompile Gromacs
 
