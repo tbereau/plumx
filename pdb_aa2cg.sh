@@ -7,7 +7,6 @@
 #       Bereau and Deserno, J. Chem. Phys. 130 (2009). 
 #
 # Tristan Bereau, 05/29/2012.
-#
 
 [ -z $1 ] && echo "Missing argument: file.pdb" && exit 1
 
@@ -29,7 +28,9 @@ if { ![file exists ${pdb_base}_autopsf.psf] } {
 
 mol load psf ${pdb_base}_autopsf.psf pdb ${pdb_base}_autopsf.pdb
 
-set cg [atomselect top "not (sidechain or type HB HC or name OT2 OT3) or name CB"]
+set cg [atomselect top "not (sidechain or type HB HC or name OT2 OT3) or name CB HT1"]
+set firsth [atomselect top "name HT1"]
+\$firsth set name HN
 
 \$cg writepdb ${pdb_base}_cg.pdb
 EOF
