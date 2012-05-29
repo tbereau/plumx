@@ -1,26 +1,46 @@
 #!/bin/sh
 #
-# Convert atomistic pdb file to CG pdb file. 
-# Trim file and keep only atom names: N HN CA CB C O.
+# Convert atomistic PDB file to CG PDB file.  Generates VMD script to convert
+# PDB to PLUM-compatible input structure.
 #
-# CG model from 
-#     Bereau and Deserno, J. Chem. Phys. 130 (2009).  
+# CG model from
+#       Bereau and Deserno, J. Chem. Phys. 130 (2009). 
 #
-# Tristan Bereau, 09/08/2011.
+# Tristan Bereau, 05/29/2012.
 #
 
-die() {
-    echo $@
-    exit 1
+[ -z $1 ] && echo "Missing argument: file.pdb" && exit 1
+
+pdb=$1
+pdb_base=`basename $pdb .pdb`
+
+cat > convert2cg.tmp.tcl <<EOF
+
+mol load pdb $pdb
+
+autopsf -mol 0
+
+mol delete 0
+
+if { ![file exists ${pdb_base}_autopsf.psf] } {
+    puts "Error. autopsf produced an error."
+    exit
 }
 
-[ -z $1 ] && die "Not enough arguments: 1) pdb file"
+mol load psf ${pdb_base}_autopsf.psf pdb ${pdb_base}_autopsf.pdb
 
-echo "REMARK  Generated with pdb_aa2cg.sh"
-cat $1 | awk 'BEGIN{}
-{
-    if ($1=="ATOM" && ($3=="N" || $3=="HN" || $3=="CA" || $3=="CB" || $3=="C" || $3=="O")) {
-        print $0;
-    }
-}'
+set cg [atomselect top "not (sidechain or type HB HC or name OT2 OT3) or name CB"]
 
+\$cg writepdb ${pdb_base}_cg.pdb
+EOF
+
+vmd < convert2cg.tmp.tcl >convert2cg.vmd.out
+
+[ ! -f ${pdb_base}_cg.pdb ] && echo \
+    "VMD failed to output CG structure. See convert2cg.vmd.out" \
+    && exit 1
+
+cat ${pdb_base}_cg.pdb 
+
+rm ${pdb_base}_cg.pdb ${pdb_base}_autopsf.psf ${pdb_base}_autopsf.pdb \
+    ${pdb_base}_autopsf.log convert2cg.tmp.tcl convert2cg.vmd.out
