@@ -1,9 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
 # generate energygrps and energygrp_table variables for .mdp file.
 # Append script output to .mdp file.
 # do not include SC - SC (they use the generic table.xvg).
 # read in 1 letter-code sequence to determine list of interactions.
+#
+# Optional: 
+#  -no_lipid:  don't include lipid parameters
 # 
 # name of amino acids. 
 # Special 1-letter codes: 
@@ -19,10 +22,22 @@ die() {
     exit 1
 }
 
-[ -z $1 ] && die "Missing sequence file"
+flag_lipid=0
 
-seq=`cat $1`
-seq_length=`cat $1 | wc -c`
+[ -z $1 ] && die "Missing sequence file"
+for (( c=1; c<=$#; c++ )); do
+    eval arg=\$$c
+    d=`echo "$c + 1" | bc -l`
+    eval argn=\$$d
+    if [ $arg == "-no_lipid" ]; then
+        flag_lipid=1
+    else
+        seq_file=$arg
+    fi
+done
+
+seq=`cat $seq_file`
+seq_length=`cat $seq_file | wc -c`
 
 list_lipid=(CH PH GL ES AS AD AE N C)
 list3aa=(ALA ARG0 ARGP ASN ASP0 ASPM CYS GLN GLU0 GLUM GLY HIS ILE LEU LYS0 LYSP MET PHE PRO SER THR TRP TYR VAL CAP)
@@ -51,26 +66,30 @@ n_list_lipid=${#list_lipid[@]}
 n_laa=${#list3aa[@]}
 
 echo -ne "energygrps               = "
-for ((i=0;i<$n_list_lipid;++i)); do
-    echo -ne "${list_lipid[$i]} ";
-done;
+if [ $flag_lipid == 0 ]; then
+    for ((i=0;i<$n_list_lipid;++i)); do
+        echo -ne "${list_lipid[$i]} ";
+    done;
+fi
 for (( k=0; k<${#seq_aa[@]}; ++k )); do
     echo -ne "${list3aa[${seq_aa[$k]}]} ";
 done;
 
 
 echo -ne "\nenergygrp_table          = "
-for ((i=0;i<$n_list_lipid;++i)); do 
-    for ((j=$i;j<$n_list_lipid;++j)); do 
-	echo -ne "${list_lipid[$i]} ${list_lipid[$j]} "; 
+if [ $flag_lipid == 0 ]; then
+    for ((i=0;i<$n_list_lipid;++i)); do 
+        for ((j=$i;j<$n_list_lipid;++j)); do 
+	          echo -ne "${list_lipid[$i]} ${list_lipid[$j]} "; 
+        done; 
     done; 
-done; 
-
-for ((i=0;i<$n_list_lipid;++i)); do 
-    for (( k=0; k<${#seq_aa[@]}; ++k )); do
-	echo -ne "${list3aa[${seq_aa[$k]}]} ${list_lipid[$i]} "; 
+    
+    for ((i=0;i<$n_list_lipid;++i)); do 
+        for (( k=0; k<${#seq_aa[@]}; ++k )); do
+	          echo -ne "${list3aa[${seq_aa[$k]}]} ${list_lipid[$i]} "; 
+        done; 
     done; 
-done; 
+fi
 
 echo ""
 

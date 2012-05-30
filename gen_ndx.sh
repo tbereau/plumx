@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Generate index file for PLUM simulation.  
 # Reads .gro file and runs make_ndx
@@ -15,18 +15,20 @@ die () {
 [ -z $1 ] && die "Please provide .gro file"
 
 nam_incr=0
-query=("keep 0" "a C CA O" "a N HN" "a CH" "a PH" "a GL" "a ES1 ES2" "a AS11 AS12 AS13 AS14 AS21 AS22 AS24 AS25" "a AD23" "a AE15 AE26")
-name=(C N CH PH GL ES AS AD AE)
+query=("keep 0" "a C CA O" "a N HN")
+name=(C N)
 # add side chains
 for i in ALA ARG0 ARGP ASN ASP0 ASPM CYS GLN GLU0 GLUM GLY HIS ILE LEU LYS0 \
     LYSP MET PHE PRO SER THR TRP TYR VAL CAP; do
     grep $i $1 > /dev/null
     if [ $? -eq 0 ]; then
-	query=( "${query[@]}" "a CB & r $i")
-	name=( "${name[@]}" $i)
+	      query=( "${query[@]}" "a CB & r $i")
+	      name=( "${name[@]}" $i)
     fi
 done
-
+query=("${query[@]}" "a CH" "a PH" "a GL" "a ES1 ES2" \
+    "a AS11 AS12 AS13 AS14 AS21 AS22 AS24 AS25" "a AD23" "a AE15 AE26")
+name=( "${name[@]}" CH PH GL ES AS AD AE)
 
 n_query=${#query[@]}
 
@@ -40,5 +42,5 @@ done
 
 echo "q" >> $file
 
-cat $file | make_ndx -f
+cat $file | make_ndx -f $1
 rm -f $file
