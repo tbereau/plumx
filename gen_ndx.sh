@@ -17,8 +17,8 @@ die () {
 nam_incr=0
 query=("keep 0" "a C CA O" "a N HN")
 name=(C N)
-# add side chains
-for i in ALA ARG0 ARGP ASN ASP0 ASPM CYS GLN GLU0 GLUM GLY HIS ILE LEU LYS0 \
+# add side chains (except GLY, no CB)
+for i in ALA ARG0 ARGP ASN ASP0 ASPM CYS GLN GLU0 GLUM HIS ILE LEU LYS0 \
     LYSP MET PHE PRO SER THR TRP TYR VAL CAP; do
     grep $i $1 > /dev/null
     if [ $? -eq 0 ]; then
@@ -39,6 +39,7 @@ for (( i=0; i<$n_query; ++i )); do
     [ "$i" -gt "0" ] && echo "name $nam_incr ${name[$i-1]}" >> $file
     let nam_incr+=1
 done
+
 
 echo "q" >> $file
 

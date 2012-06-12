@@ -36,30 +36,35 @@ for (( c=1; c<=$#; c++ )); do
     fi
 done
 
-seq=`cat $seq_file`
-seq_length=`cat $seq_file | wc -c`
+seq_lines=`cat $seq_file | wc -l`
 
 list_lipid=(CH PH GL ES AS AD AE N C)
 list3aa=(ALA ARG0 ARGP ASN ASP0 ASPM CYS GLN GLU0 GLUM GLY HIS ILE LEU LYS0 LYSP MET PHE PRO SER THR TRP TYR VAL CAP)
 list1aa=(A   R    B    N   D    J    C   Q   E    O    G   H   I   L   K    U    M   F   P   S   T   W   Y   V   Z  )
 seq_aa=()
 
-for (( i=0; i<$seq_length; ++i )); do
-    letter=${seq:$i:1}
-    if [ "$letter" != "" ]; then
-	seq_index=-1
-	for (( j=0; j<${#list1aa[@]}; ++j )); do
-	    [ "$letter" == "${list1aa[$j]}" ] && seq_index=$j
-	done
-	[ "$seq_index" == "-1" ] && die "Amino acid code $letter is unrecognized."
-	
-	# if the residue hasn't been added to the list yet, add it now
-	res_in_list=0
-	for (( k=0; k<${#seq_aa[@]}; ++k )); do
-	    [ "${seq_aa[$k]}" == "$seq_index" ] && res_in_list=1
-	done
-	[ "$res_in_list" == "0" ] && seq_aa=( ${seq_aa[@]-} $seq_index )
-    fi
+for (( l=1; l<=$seq_lines; ++l )); do
+    seq_length=`head -n $l $seq_file | tail -1 | wc -c`
+    seq=`head -n $l $seq_file | tail -1`
+    for (( i=0; i<$seq_length; ++i )); do
+        letter=${seq:$i:1}
+        if [ "$letter" != "" ] && [ "$letter" != " " ] && [ "$letter" != "\n" ]; then
+	          seq_index=-1
+	          for (( j=0; j<${#list1aa[@]}; ++j )); do
+	              [ "$letter" == "${list1aa[$j]}" ] && seq_index=$j
+	          done
+	          [ "$seq_index" == "-1" ] && die "Amino acid code $letter is unrecognized."
+	          
+   	        # if the residue hasn't been added to the list yet, add it now
+	          res_in_list=0
+	          for (( k=0; k<${#seq_aa[@]}; ++k )); do
+	              [ "${seq_aa[$k]}" == "$seq_index" ] && res_in_list=1
+	          done
+            # Exclude GLY
+	          [ "$res_in_list" == "0" ] && [ "$seq_index" != "10" ] \
+                && seq_aa=( ${seq_aa[@]-} $seq_index )
+        fi
+    done
 done
 
 n_list_lipid=${#list_lipid[@]}

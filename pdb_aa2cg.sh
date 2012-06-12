@@ -51,6 +51,8 @@ cat > reorder.tmp.pl <<EOF
 #
 
 @at_nm = ("N ","HN","CA","CB","C ","O ");
+\$chain = "P1";
+
 
 \$id_j = 0;
 
@@ -58,63 +60,117 @@ cat > reorder.tmp.pl <<EOF
 \$last_i = 1;
 
 while (defined(\$line = <STDIN>)) {
-    if (\$line  =~ /HETATM/ || \$line =~ /ATOM/) {
-\$at_id_i = substr \$line, 4, 7;
-\$at_id_n = substr \$line, 13,2;
-if (\$at_nm[\$id_j % 6] !~ \$at_id_n) {
-            for (\$ele = 0; \$ele < @store_lines; \$ele++) {
-\$ele_n = substr \$store_lines[\$ele], 13, 2;
-if (\$ele_n =~ \$at_id_n) {
-                    \$f_last_i = sprintf("%7d",\$last_i);
-                    \$newline = substr \$store_lines[\$ele], 4, 7, \$f_last_i;
-                    print "\$store_lines[\$ele]";
-                    delete \$store_lines[\$ele];
-                    \$last_i += 1;
-                    \$id_j += 1;
-}
-            }
-            push(@store_lines,\$line);
-} else {
-            if (\$at_id_i !~ \$last_i) {
-\$f_last_i = sprintf("%7d",\$last_i);
-\$newline = substr \$line, 4, 7, \$f_last_i;
-            }
-            print \$line;
-            \$last_i += 1;
+  if (\$line  =~ /HETATM/ || \$line =~ /ATOM/) {
+    \$at_id_i = substr \$line, 4, 7;
+    \$at_id_n = substr \$line, 13,2;
+    \$at_id_res = substr \$line, 17,3;
+    \$at_chain = substr \$line, 72,2;
+    if (\$at_chain !~ \$chain) {
+      # If we change of chain, look for stored residues
+      for (\$ele = 0; \$ele < @store_lines; \$ele++) {
+        \$ele_i = substr \$store_lines[\$ele], 4, 7;
+        \$ele_n = substr \$store_lines[\$ele], 13, 2;
+        \$ele_chain = substr \$store_lines[\$ele], 72, 2;
+        if (\$ele_n =~ \$at_nm[\$id_j % 6] && \$ele_chain =~ \$at_chain) {
+          \$at_id_res = substr \$store_lines[\$ele],17,3; 
+          \$f_last_i = sprintf("%7d",\$last_i);
+          \$newline = substr \$store_lines[\$ele], 4, 7, \$f_last_i;
+          print "\$store_lines[\$ele]";
+          \$at_id_res = substr \$store_lines[\$ele],17,3;
+          \$chain = substr \$store_lines[\$ele], 72, 2;
+          delete \$store_lines[\$ele];
+          \$last_i += 1;
+          \$id_j += 1;
+          # Special cases for GLY and PRO
+          if (\$at_id_res =~ "GLY" && \$id_j % 6 == 3) {
             \$id_j += 1;
-}
-    } else {
-if (\$line !~ /END/) {
-            print "\$line";
-}
+          }
+          if (\$at_id_res =~ "PRO" && \$id_j % 6 == 1) {
+            \$id_j += 1;
+          }      
+        }
+      }
     }
+
+    if (\$at_nm[\$id_j % 6] !~ \$at_id_n) {
+      for (\$ele = 0; \$ele < @store_lines; \$ele++) {
+        \$ele_n = substr \$store_lines[\$ele], 13, 2;
+        \$ele_chain = substr \$store_lines[\$ele], 72, 2;
+        if (\$ele_n =~ \$at_nm[\$id_j % 6] && \$ele_chain =~ \$chain) {
+          \$f_last_i = sprintf("%7d",\$last_i);
+          \$newline = substr \$store_lines[\$ele], 4, 7, \$f_last_i;
+          print "\$store_lines[\$ele]";
+          \$at_id_res = substr \$store_lines[\$ele],17,3;
+          \$chain = substr \$store_lines[\$ele], 72, 2;
+          delete \$store_lines[\$ele];
+          \$last_i += 1;
+          \$id_j += 1;
+          # Special cases for GLY and PRO
+          if (\$at_id_res =~ "GLY" && \$id_j % 6 == 3) {
+            \$id_j += 1;
+          }
+          if (\$at_id_res =~ "PRO" && \$id_j % 6 == 1) {
+            \$id_j += 1;
+          }
+        }
+      }
+      push(@store_lines,\$line);
+    } else {
+      if (\$at_id_i !~ \$last_i) {
+        \$f_last_i = sprintf("%7d",\$last_i);
+        \$newline = substr \$line, 4, 7, \$f_last_i;
+      }
+      print \$line;
+      \$last_i += 1;
+      \$id_j += 1;
+      # Special cases for GLY and PRO
+      if (\$at_id_res =~ "GLY" && \$id_j % 6 == 3) {
+        \$id_j += 1;
+      }
+      if (\$at_id_res =~ "PRO" && \$id_j % 6 == 1) {
+        \$id_j += 1;
+      }
+    }
+  } else {
+    if (\$line !~ /END/) {
+      print "\$line";
+    }
+  }
 }
 
 while (@store_lines > 0) {
-    \$found_one = 0;
-    for (\$ele = 0; \$ele < @store_lines; \$ele++) {
-\$ele_n = substr \$store_lines[\$ele], 13, 2;
-if (\$at_nm[\$id_j % 6] =~ \$ele_n) {
-            \$f_last_i =sprintf("%7d",\$last_i);
-            \$newline = substr \$store_lines[\$ele], 4, 7,\$f_last_i;
-            print "\$store_lines[\$ele]";
-            delete \$store_lines[\$ele];
-            \$last_i += 1;
-            \$id_j += 1;
-            \$found_one = 1;
-}
+  \$found_one = 0;
+  for (\$ele = 0; \$ele < @store_lines; \$ele++) {
+    \$ele_n = substr \$store_lines[\$ele], 13, 2;
+    \$ele_chain = substr \$store_lines[\$ele], 72, 2;
+    if (\$at_nm[\$id_j % 6] =~ \$ele_n) {
+      \$f_last_i =sprintf("%7d",\$last_i);
+      \$newline = substr \$store_lines[\$ele], 4, 7,\$f_last_i;
+      print "\$store_lines[\$ele]";
+      delete \$store_lines[\$ele];
+      \$last_i += 1;
+      \$id_j += 1;
+      \$found_one = 1;
+      # Special cases for GLY and PRO
+      if (\$at_id_res =~ "GLY" && \$id_j % 6 == 3) {
+        \$id_j += 1;
+      }
+      if (\$at_id_res =~ "PRO" && \$id_j % 6 == 1) {
+        \$id_j += 1;
+      }
     }
-    if (\$found_one == 0) {
-        print "Error. Can't properly reorder the atoms. See PDB or contact\n";
-print "Tristan Bereau (bereau@alumni.cmu.edu)"
-    }
+  }
+  if (\$found_one == 0) {
+    print "Error. Can't properly reorder the atoms. See PDB or contact\n";
+    print "Tristan Bereau (bereau@alumni.cmu.edu)\n";
+  }
 }
 
-print "END\n"
+print "END\n";
 
 EOF
 
 cat ${pdb_base}_cg.pdb | perl reorder.tmp.pl
 
-rm ${pdb_base}_cg.pdb ${pdb_base}_autopsf.psf ${pdb_base}_autopsf.pdb \
-    ${pdb_base}_autopsf.log convert2cg.tmp.tcl convert2cg.vmd.out reorder.tmp.pl
+#rm ${pdb_base}_cg.pdb ${pdb_base}_autopsf.psf ${pdb_base}_autopsf.pdb \
+#    ${pdb_base}_autopsf.log convert2cg.tmp.tcl convert2cg.vmd.out reorder.tmp.pl
