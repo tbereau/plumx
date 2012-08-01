@@ -34,3 +34,12 @@ grompp -f em_steep.mdp -c dppc128_after_40ns.gro -p topol.top -o topol.tpr
 csg_map --top atomistic_files/topol.tpr --out dppc.pdb --cg dppc.xml --trj atomistic_files/dppc128_after_40ns.gro --map-ignore "SOL"
 
 # --map-ignore - list to to skip warnings about another molecules present in the atomistic file but not defined in the VOTCA mapping file
+
+# in case you want to map the water to its center of mass
+
+csg_map --top atomistic_files/topol.tpr --out dppc.pdb --cg "dppc.xml;water.xml" --trj atomistic_files/dppc128_after_40ns.gro
+
+# Command line for generating a template topology for the coarse grained representation
+
+csg_gmxtopol --top atomistic_files/topol.tpr --cg dppc.xml --map-ignore SOL --out topol_cg.top
+
