@@ -72,6 +72,8 @@ my $res_count=1;
 my @type = ("HBN", "  H", " CA", "   ", "HBC", "  O");
 my $type_pro = "N";
 my @name = (" N", "HN", "CA", "CB", " C", " O");
+my @name_pro = (" N", "CA", "CB", " C", " O");
+my @name_gly = (" N", "HN", "CA", " C", " O");
 my @cgnr = (1,1,2,3,4,4);
 my $cgnr_count=0;
 my @mass = (14.0,1.0,12.0,0.0,12.0,16.0);
@@ -260,9 +262,9 @@ my @ai_pro     = (1,2,1, 4,4,2);
 my @aj_pro     = (2,4,2, 6,6,4);
 my @ak_proxxx  = (4,6,4, 8,7,5);
 my @ak_xxxpro  = (5,7,5, 8,0,6);
-my @ak_propro  = (4,6,4, 7,8,5);
+my @ak_propro  = (4,6,4, 7,0,5);
 my @al_proxxx  = (3,8,6,10,8,6);
-my @al_xxxpro  = (4,8,7,10,0,7);
+my @al_xxxpro  = (4,8,7,10,8,7);
 my @al_progly  = (3,8,6, 9,8,6);
 my @al_propro  = (3,7,6, 9,7,6);
 # omega dihedral=172.86. All cases except proline.
@@ -283,26 +285,23 @@ for (my $i=0; $i < $number_of_chains; $i++)
         }
         for (my $k=0; $k < $max_k; $k++)
         {
-            if ($seqi[$j] eq "G" and $k == 0) {
-                # Do nothing
-            #} elsif ($k == 6 and $seqi[$j] eq "G" and $seqi[$j+1] eq "P") {
-            #} elsif ($k == 6 and $seqi[$j] eq "P" and $seqi[$j+1] eq "P") {
-            #} elsif ($k == 6 and $seqi[$j+1] eq "P") {
-            } elsif ($seqi[$j] eq "G") {
-                if ($seqi[$j+1] eq "P") {
-                    if ($k != 4) {
+            if ($seqi[$j] eq "G") {
+                if ($k != 0) {
+                    if ($seqi[$j+1] eq "P") {
+                        if ($k != 4) {
+                            printf(" %6d    %6d     %6d     %6d     %4d ;   %6.2f    %+6.5e    %2d;  %2s - %2s - %2s - %2s interaction\n",
+                                   $at_count+$ai_gly[$k],$at_count+$aj_gly[$k],$at_count+$ak_glypro[$k],$at_count+$al_glypro[$k],1,
+                                   @dihedrallist[$k],$kdih[$k],$multiplicities[$k],@name[@ai[$k]-1],@name[@aj2[$k]-1],@name[@ak2[$k]-1],@name[@al2[$k]-1]);
+                        }
+                    } elsif ($seqi[$j+1] eq "G") {
                         printf(" %6d    %6d     %6d     %6d     %4d ;   %6.2f    %+6.5e    %2d;  %2s - %2s - %2s - %2s interaction\n",
-                               $at_count+$ai_gly[$k],$at_count+$aj_gly[$k],$at_count+$ak_glypro[$k],$at_count+$al_glypro[$k],1,
+                               $at_count+$ai_gly[$k],$at_count+$aj_gly[$k],$at_count+$ak_glyxxx[$k],$at_count+$al_glygly[$k],1,
+                               @dihedrallist[$k],$kdih[$k],$multiplicities[$k],@name[@ai[$k]-1],@name[@aj2[$k]-1],@name[@ak2[$k]-1],@name[@al2[$k]-1]);
+                    } else {
+                        printf(" %6d    %6d     %6d     %6d     %4d ;   %6.2f    %+6.5e    %2d;  %2s - %2s - %2s - %2s interaction\n",
+                               $at_count+$ai_gly[$k],$at_count+$aj_gly[$k],$at_count+$ak_glyxxx[$k],$at_count+$al_glyxxx[$k],1,
                                @dihedrallist[$k],$kdih[$k],$multiplicities[$k],@name[@ai[$k]-1],@name[@aj2[$k]-1],@name[@ak2[$k]-1],@name[@al2[$k]-1]);
                     }
-                } elsif ($seqi[$j+1] eq "G") {
-                    printf(" %6d    %6d     %6d     %6d     %4d ;   %6.2f    %+6.5e    %2d;  %2s - %2s - %2s - %2s interaction\n",
-                           $at_count+$ai_gly[$k],$at_count+$aj_gly[$k],$at_count+$ak_glyxxx[$k],$at_count+$al_glygly[$k],1,
-                           @dihedrallist[$k],$kdih[$k],$multiplicities[$k],@name[@ai[$k]-1],@name[@aj2[$k]-1],@name[@ak2[$k]-1],@name[@al2[$k]-1]);
-                } else {
-                    printf(" %6d    %6d     %6d     %6d     %4d ;   %6.2f    %+6.5e    %2d;  %2s - %2s - %2s - %2s interaction\n",
-                           $at_count+$ai_gly[$k],$at_count+$aj_gly[$k],$at_count+$ak_glyxxx[$k],$at_count+$al_glyxxx[$k],1,
-                           @dihedrallist[$k],$kdih[$k],$multiplicities[$k],@name[@ai[$k]-1],@name[@aj2[$k]-1],@name[@ak2[$k]-1],@name[@al2[$k]-1]);
                 }
             } elsif ($seqi[$j] eq "P") {
                 if ( $k==1) {
@@ -359,37 +358,4 @@ for (my $i=0; $i < $number_of_chains; $i++)
         }
     }
 }
-
-$res_count=0;
-$at_count=0;
-# print [ exclusions ]
-print "\n[ exclusions ]\n";
-print "; explicitly exclude all nonbonded HN-O interactions that are 3 bonds apart.\n";
-print ";    ai        aj\n";
-for (my $i=0; $i < $number_of_chains; $i++)
-{
-    my @seqi = split(//, $sequences[$i]);
-    for (my $j=0; $j < @seqi; $j++)
-    {
-        # is it the end of the chain?
-        if ($j < @seqi-1) {
-            if ($seqi[$j+1] eq "P") {
-                # Do nothing
-            } elsif ($seqi[$j] eq "G" or $seqi[$j] eq "P") {
-                printf(" %6d    %6d ;  %2s - %2s interaction\n",
-                       $at_count+5,$at_count+7,"O","H");
-            } else {
-                printf(" %6d    %6d ;  %2s - %2s interaction\n",
-                       $at_count+6,$at_count+8,"O","H");
-            }
-        }
-        $res_count++;
-        if ($seqi[$j] eq "G" or $seqi[$j] eq "P") {
-            $at_count += 5;
-        } else {
-            $at_count += 6;      
-        }
-    }
-}
-
 

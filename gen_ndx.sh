@@ -14,8 +14,14 @@ die () {
 
 [ -z $1 ] && die "Please provide .gro file"
 
-nam_incr=0
-query=("keep 0" "a C CA O" "a N HN")
+
+file="tmp_ndx.XXX"
+rm -f $file
+
+nam_incr=1
+# keep 0
+echo "keep 0" >> $file
+query=("a C CA O" "a N HN")
 name=(C N)
 # add side chains (except GLY, no CB)
 for i in ALA ARG0 ARGP ASN ASP0 ASPM CYS GLN GLU0 GLUM HIS ILE LEU LYS0 \
@@ -32,16 +38,19 @@ name=( "${name[@]}" CH PH GL ES AS AD AE)
 
 n_query=${#query[@]}
 
-file="tmp_ndx.XXX"
-rm -f $file
 for (( i=0; i<$n_query; ++i )); do
     echo "${query[$i]}" >> $file
-    [ "$i" -gt "0" ] && echo "name $nam_incr ${name[$i-1]}" >> $file
+    # [ "$i" -gt "0" ] && 
+    echo "name $nam_incr ${name[$i]}" >> $file
     let nam_incr+=1
 done
 
 
+# for ((i=1;i<100;++i)); do
+#     echo "del $i"
+# done
 echo "q" >> $file
 
+cat $file
 cat $file | make_ndx -f $1
 rm -f $file

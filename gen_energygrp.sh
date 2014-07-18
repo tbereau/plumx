@@ -38,7 +38,8 @@ done
 
 seq_lines=`cat $seq_file | wc -l`
 
-list_lipid=(CH PH GL ES AS AD AE N C)
+list_lipid=(CH PH GL ES AS AD AE)
+list_pep_bb=(N C)
 list3aa=(ALA ARG0 ARGP ASN ASP0 ASPM CYS GLN GLU0 GLUM GLY HIS ILE LEU LYS0 LYSP MET PHE PRO SER THR TRP TYR VAL CAP)
 list1aa=(A   R    B    N   D    J    C   Q   E    O    G   H   I   L   K    U    M   F   P   S   T   W   Y   V   Z  )
 seq_aa=()
@@ -76,6 +77,11 @@ if [ $flag_lipid == 0 ]; then
         echo -ne "${list_lipid[$i]} ";
     done;
 fi
+# backbone
+for (( k=0; k<${#list_pep_bb[@]}; ++k)); do
+    echo -ne "${list_pep_bb[$k]} ";
+done;
+# side chains
 for (( k=0; k<${#seq_aa[@]}; ++k )); do
     echo -ne "${list3aa[${seq_aa[$k]}]} ";
 done;
@@ -85,16 +91,36 @@ echo -ne "\nenergygrp_table          = "
 if [ $flag_lipid == 0 ]; then
     for ((i=0;i<$n_list_lipid;++i)); do 
         for ((j=$i;j<$n_list_lipid;++j)); do 
-	          echo -ne "${list_lipid[$i]} ${list_lipid[$j]} "; 
+	          echo -ne "${list_lipid[$i]} ${list_lipid[$j]}  "; 
         done; 
     done; 
     
     for ((i=0;i<$n_list_lipid;++i)); do 
         for (( k=0; k<${#seq_aa[@]}; ++k )); do
-	          echo -ne "${list3aa[${seq_aa[$k]}]} ${list_lipid[$i]} "; 
+	          echo -ne "${list3aa[${seq_aa[$k]}]} ${list_lipid[$i]}  "; 
         done; 
     done; 
+
+    for ((i=0;i<$n_list_lipid;++i)); do 
+        for (( k=0; k<${#list_pep_bb[@]}; ++k )); do
+              echo -ne "${list_pep_bb[$k]} ${list_lipid[$i]}  "; 
+        done; 
+    done;   
 fi
+
+# backbone backbone
+for ((i=0;i<${#list_pep_bb[@]};++i)); do
+    for (( k=$i; k<${#list_pep_bb[@]}; ++k)); do
+        echo -ne "${list_pep_bb[$k]} ${list_pep_bb[$i]}  ";
+    done;
+done;
+
+# backbone sidechain
+for ((i=0;i<${#seq_aa[@]};++i)); do
+    for (( k=0; k<${#list_pep_bb[@]}; ++k)); do
+        echo -ne "${list_pep_bb[$k]} ${list3aa[${seq_aa[$i]}]}  ";
+    done;
+done;
 
 echo ""
 
