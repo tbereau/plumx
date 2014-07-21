@@ -1,7 +1,5 @@
-diff --git a/src/gmxlib/nonbonded/nb_generic_cg.c b/src/gmxlib/nonbonded/nb_generic_cg.c
-index 400866f..5779173 100644
---- a/src/gmxlib/nonbonded/nb_generic_cg.c
-+++ b/src/gmxlib/nonbonded/nb_generic_cg.c
+--- src/gmxlib/nonbonded/nb_generic_cg.c.bkp	2011-07-29 10:30:59.973214000 +0200
++++ src/gmxlib/nonbonded/nb_generic_cg.c	2014-07-21 09:17:52.309497438 +0200
 @@ -83,6 +83,23 @@
       int *         shift;
       int *         type;
@@ -34,20 +32,33 @@ index 400866f..5779173 100644
 +     ljangle_switch      = fr->userint1;
 +     ljangle_type1       = fr->userint2;
 +     ljangle_type2       = fr->userint3;
-+     ljangle_cap         = 5000.;
++     ljangle_cap         = 1000.;
       
       for(n=0; (n<nlist->nri); n++)
       {
-@@ -223,6 +245,120 @@
+@@ -223,67 +245,181 @@
                       if (ivdw > 0)
                       {
                           tj               = nti+nvdwparam*type[aj];
+-                         
+-                         switch(ivdw)
 +
 +                         /* Angular Lennard-Jones interaction */
 +                         /* Look for ljangle_type1 and ljangle_type2 */
 +                         if (ljangle_switch == 9999 && ((type[ai] == ljangle_type1 && type[aj] == ljangle_type2) ||
 +                                                        (type[ai] == ljangle_type2 && type[aj] == ljangle_type1))) 
-+                         {
+                          {
+-                         case 1:
+-                             /* Vanilla Lennard-Jones cutoff */
+-                             c6               = vdwparam[tj];   
+-                             c12              = vdwparam[tj+1]; 
+-                             
+-                             rinvsix          = rinvsq*rinvsq*rinvsq;
+-                             Vvdw_disp        = c6*rinvsix;     
+-                             Vvdw_rep         = c12*rinvsix*rinvsix;
+-                             fscal           += (12.0*Vvdw_rep-6.0*Vvdw_disp)*rinvsq;
+-                             Vvdwtot          = Vvdwtot+Vvdw_rep-Vvdw_disp;
+-                             break;
 +                             /* Assume virtual sites have ID ai+1 and aj+1.
 +                              * Retrieve particle positions. */
 +                             ip3              = (ai+1)*3;
@@ -98,8 +109,8 @@ index 400866f..5779173 100644
 +                                 if (radial_fac > ljangle_cap)
 +                                     radial_fac = ljangle_cap;
 +                                 Vvdwtot          = Vvdwtot+radial_fac*cos_theta1_sq*cos_theta2_sq;
-+                                 /* printf("ljangle: %3d-%3d: %6.2f - rad %6.5f - rinv %6.5f %6.5f - coeffs %6.5f %6.5f - rsq %6.5f - c %6.5f %6.5f\n",
-+                                    ai,aj,Vvdwtot,radial_fac,rinvsq,rinvsix,Vvdw_rep,Vvdw_disp,rsq,c6,c12); */
++                                 // printf("ljangle: %3d-%3d: %6.2f - rad %6.5f - rinv %6.5f %6.5f - coeffs %6.5f %6.5f - rsq %6.5f - c %6.5f %6.5f\n",
++                                 //   ai,aj,Vvdwtot,radial_fac,rinvsq,rinvsix,Vvdw_rep,Vvdw_disp,rsq,c6,c12); 
 +                                 radial_fac_prime = (10.0*Vvdw_disp-12.0*Vvdw_rep)*rinv;
 +                                 /* Update forces for all 4 particles.
 +                                  * f_ljangle_X correspond to different
@@ -156,14 +167,115 @@ index 400866f..5779173 100644
 +                                     
 +                             }
 +                         } else { 
-                          
-                          switch(ivdw)
-                          {
-@@ -284,6 +420,7 @@
-                              gmx_fatal(FARGS,"Death & horror! No generic VdW interaction for ivdw=%d.\n",ivdw);
-                              break;
-                          }
++                             switch(ivdw)
++                             {
++                             case 1:
++                                 /* Vanilla Lennard-Jones cutoff */
++                                 c6               = vdwparam[tj];   
++                                 c12              = vdwparam[tj+1]; 
++                                 
++                                 rinvsix          = rinvsq*rinvsq*rinvsq;
++                                 Vvdw_disp        = c6*rinvsix;     
++                                 Vvdw_rep         = c12*rinvsix*rinvsix;
++                                 fscal           += (12.0*Vvdw_rep-6.0*Vvdw_disp)*rinvsq;
++                                 Vvdwtot          = Vvdwtot+Vvdw_rep-Vvdw_disp;
++                                 break;
+                              
+-                         case 2:
+-                             /* Buckingham */
+-                             c6               = vdwparam[tj];   
+-                             cexp1            = vdwparam[tj+1]; 
+-                             cexp2            = vdwparam[tj+2]; 
+-                             
+-                             rinvsix          = rinvsq*rinvsq*rinvsq;
+-                             Vvdw_disp        = c6*rinvsix;     
+-                             br               = cexp2*rsq*rinv;
+-                             Vvdw_rep         = cexp1*exp(-br); 
+-                             fscal           += (br*Vvdw_rep-6.0*Vvdw_disp)*rinvsq;
+-                             Vvdwtot          = Vvdwtot+Vvdw_rep-Vvdw_disp;
+-                             break;
++                             case 2:
++                                 /* Buckingham */
++                                 c6               = vdwparam[tj];   
++                                 cexp1            = vdwparam[tj+1]; 
++                                 cexp2            = vdwparam[tj+2]; 
+                              
+-                         case 3:
+-                             /* Tabulated VdW */
+-                             c6               = vdwparam[tj];   
+-                             c12              = vdwparam[tj+1]; 
++                                 rinvsix          = rinvsq*rinvsq*rinvsq;
++                                 Vvdw_disp        = c6*rinvsix;     
++                                 br               = cexp2*rsq*rinv;
++                                 Vvdw_rep         = cexp1*exp(-br); 
++                                 fscal           += (br*Vvdw_rep-6.0*Vvdw_disp)*rinvsq;
++                                 Vvdwtot          = Vvdwtot+Vvdw_rep-Vvdw_disp;
++                                 break;
+                              
+-                             Y                = VFtab[nnn];     
+-                             F                = VFtab[nnn+1];   
+-                             Geps             = eps*VFtab[nnn+2];
+-                             Heps2            = eps2*VFtab[nnn+3];
+-                             Fp               = F+Geps+Heps2;   
+-                             VV               = Y+eps*Fp;       
+-                             FF               = Fp+Geps+2.0*Heps2;
+-                             Vvdw_disp        = c6*VV;          
+-                             fijD             = c6*FF;          
+-                             nnn             += 4;          
+-                             Y                = VFtab[nnn];     
+-                             F                = VFtab[nnn+1];   
+-                             Geps             = eps*VFtab[nnn+2];
+-                             Heps2            = eps2*VFtab[nnn+3];
+-                             Fp               = F+Geps+Heps2;   
+-                             VV               = Y+eps*Fp;       
+-                             FF               = Fp+Geps+2.0*Heps2;
+-                             Vvdw_rep         = c12*VV;         
+-                             fijR             = c12*FF;         
+-                             fscal           += -(fijD+fijR)*tabscale*rinv;
+-                             Vvdwtot          = Vvdwtot + Vvdw_disp + Vvdw_rep;						
+-                             break;
++                             case 3:
++                                 /* Tabulated VdW */
++                                 c6               = vdwparam[tj];   
++                                 c12              = vdwparam[tj+1]; 
+                              
+-                         default:
+-                             gmx_fatal(FARGS,"Death & horror! No generic VdW interaction for ivdw=%d.\n",ivdw);
+-                             break;
+-                         }
++                                 Y                = VFtab[nnn];     
++                                 F                = VFtab[nnn+1];   
++                                 Geps             = eps*VFtab[nnn+2];
++                                 Heps2            = eps2*VFtab[nnn+3];
++                                 Fp               = F+Geps+Heps2;   
++                                 VV               = Y+eps*Fp;       
++                                 FF               = Fp+Geps+2.0*Heps2;
++                                 Vvdw_disp        = c6*VV;          
++                                 fijD             = c6*FF;          
++                                 nnn             += 4;          
++                                 Y                = VFtab[nnn];     
++                                 F                = VFtab[nnn+1];   
++                                 Geps             = eps*VFtab[nnn+2];
++                                 Heps2            = eps2*VFtab[nnn+3];
++                                 Fp               = F+Geps+Heps2;   
++                                 VV               = Y+eps*Fp;       
++                                 FF               = Fp+Geps+2.0*Heps2;
++                                 Vvdw_rep         = c12*VV;         
++                                 fijR             = c12*FF;         
++                                 fscal           += -(fijD+fijR)*tabscale*rinv;
++                                 Vvdwtot          = Vvdwtot + Vvdw_disp + Vvdw_rep;						
++                                 break;
++                             
++                             default:
++                                 gmx_fatal(FARGS,"Death & horror! No generic VdW interaction for ivdw=%d.\n",ivdw);
++                                 break;
++                             }
 +                         }   
                       } /* end VdW interactions */
                       
                       
+@@ -314,4 +450,3 @@
+      *outeriter       = nlist->nri;            
+      *inneriter       = nlist->jindex[n];          	
+ }
+-

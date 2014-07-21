@@ -125,7 +125,7 @@
      ljangle_switch      = fr->userint1;
      ljangle_type1       = fr->userint2;
      ljangle_type2       = fr->userint3;
-     ljangle_cap         = 5000.;
+     ljangle_cap         = 1000.;
      
      for(n=0; (n<nlist->nri); n++)
      {
