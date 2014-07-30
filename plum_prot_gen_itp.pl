@@ -76,7 +76,7 @@ my @name_pro = (" N", "CA", "CB", " C", " O");
 my @name_gly = (" N", "HN", "CA", " C", " O");
 my @cgnr = (1,1,2,3,4,4);
 my $cgnr_count=0;
-my @mass = (14.0,1.0,12.0,0.0,12.0,16.0);
+my @mass = (14.0,10.0,12.0,0.0,12.0,16.0);
 print "[ atoms ]\n";
 print ";    nr   type    resnr   residue atom    cgnr charge      mass\n";
 for (my $i=0; $i < $number_of_chains; $i++)
