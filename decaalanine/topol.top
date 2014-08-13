@@ -1,0 +1,11 @@
+#include "plum.itp"
+#include "prot.itp"
+;#include "prot_2011.itp"
+
+[ system ]
+; name
+A10
+
+[ molecules ]
+; name  number
+Protein 1

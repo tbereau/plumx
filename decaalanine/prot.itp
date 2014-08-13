@@ -1,0 +1,371 @@
+; topology file for CG PLUM protein simulation.
+; Generated from plum_prot_gen_itp.pl
+;
+; ** Amino acid sequence **
+; Chain 1: AAAAAAAAAA
+[ moleculetype ]
+; molname    nrexcl
+  Protein    2
+
+[ atoms ]
+;    nr   type    resnr   residue atom    cgnr charge      mass
+      1    HBN        1       ALA    N       1  0.000     14.00
+      2      H        1       ALA   HN       1  0.000      1.00
+      3     CA        1       ALA   CA       2  0.000     12.00
+      4    ALA        1       ALA   CB       3  0.000     89.00
+      5    HBC        1       ALA    C       4  0.000     12.00
+      6      O        1       ALA    O       4  0.000     16.00
+      7    HBN        2       ALA    N       5  0.000     14.00
+      8      H        2       ALA   HN       5  0.000      1.00
+      9     CA        2       ALA   CA       6  0.000     12.00
+     10    ALA        2       ALA   CB       7  0.000     89.00
+     11    HBC        2       ALA    C       8  0.000     12.00
+     12      O        2       ALA    O       8  0.000     16.00
+     13    HBN        3       ALA    N       9  0.000     14.00
+     14      H        3       ALA   HN       9  0.000      1.00
+     15     CA        3       ALA   CA      10  0.000     12.00
+     16    ALA        3       ALA   CB      11  0.000     89.00
+     17    HBC        3       ALA    C      12  0.000     12.00
+     18      O        3       ALA    O      12  0.000     16.00
+     19    HBN        4       ALA    N      13  0.000     14.00
+     20      H        4       ALA   HN      13  0.000      1.00
+     21     CA        4       ALA   CA      14  0.000     12.00
+     22    ALA        4       ALA   CB      15  0.000     89.00
+     23    HBC        4       ALA    C      16  0.000     12.00
+     24      O        4       ALA    O      16  0.000     16.00
+     25    HBN        5       ALA    N      17  0.000     14.00
+     26      H        5       ALA   HN      17  0.000      1.00
+     27     CA        5       ALA   CA      18  0.000     12.00
+     28    ALA        5       ALA   CB      19  0.000     89.00
+     29    HBC        5       ALA    C      20  0.000     12.00
+     30      O        5       ALA    O      20  0.000     16.00
+     31    HBN        6       ALA    N      21  0.000     14.00
+     32      H        6       ALA   HN      21  0.000      1.00
+     33     CA        6       ALA   CA      22  0.000     12.00
+     34    ALA        6       ALA   CB      23  0.000     89.00
+     35    HBC        6       ALA    C      24  0.000     12.00
+     36      O        6       ALA    O      24  0.000     16.00
+     37    HBN        7       ALA    N      25  0.000     14.00
+     38      H        7       ALA   HN      25  0.000      1.00
+     39     CA        7       ALA   CA      26  0.000     12.00
+     40    ALA        7       ALA   CB      27  0.000     89.00
+     41    HBC        7       ALA    C      28  0.000     12.00
+     42      O        7       ALA    O      28  0.000     16.00
+     43    HBN        8       ALA    N      29  0.000     14.00
+     44      H        8       ALA   HN      29  0.000      1.00
+     45     CA        8       ALA   CA      30  0.000     12.00
+     46    ALA        8       ALA   CB      31  0.000     89.00
+     47    HBC        8       ALA    C      32  0.000     12.00
+     48      O        8       ALA    O      32  0.000     16.00
+     49    HBN        9       ALA    N      33  0.000     14.00
+     50      H        9       ALA   HN      33  0.000      1.00
+     51     CA        9       ALA   CA      34  0.000     12.00
+     52    ALA        9       ALA   CB      35  0.000     89.00
+     53    HBC        9       ALA    C      36  0.000     12.00
+     54      O        9       ALA    O      36  0.000     16.00
+     55    HBN       10       ALA    N      37  0.000     14.00
+     56      H       10       ALA   HN      37  0.000      1.00
+     57     CA       10       ALA   CA      38  0.000     12.00
+     58    ALA       10       ALA   CB      39  0.000     89.00
+     59    HBC       10       ALA    C      40  0.000     12.00
+     60      O       10       ALA    O      40  0.000     16.00
+
+[ bonds ]
+;    ai        aj    funct     b0             kb
+      1         2        1 ;   1.00000e-01    7.74000e+04    N - HN interaction
+      1         3        1 ;   1.45500e-01    7.74000e+04    N - CA interaction
+      3         4        1 ;   1.53000e-01    7.74000e+04   CA - CB interaction
+      3         5        1 ;   1.51000e-01    7.74000e+04   CA -  C interaction
+      5         6        1 ;   1.23500e-01    7.74000e+04    C -  O interaction
+      5         7        1 ;   1.32500e-01    7.74000e+04    C -  N interaction
+      7         8        1 ;   1.00000e-01    7.74000e+04    N - HN interaction
+      7         9        1 ;   1.45500e-01    7.74000e+04    N - CA interaction
+      9        10        1 ;   1.53000e-01    7.74000e+04   CA - CB interaction
+      9        11        1 ;   1.51000e-01    7.74000e+04   CA -  C interaction
+     11        12        1 ;   1.23500e-01    7.74000e+04    C -  O interaction
+     11        13        1 ;   1.32500e-01    7.74000e+04    C -  N interaction
+     13        14        1 ;   1.00000e-01    7.74000e+04    N - HN interaction
+     13        15        1 ;   1.45500e-01    7.74000e+04    N - CA interaction
+     15        16        1 ;   1.53000e-01    7.74000e+04   CA - CB interaction
+     15        17        1 ;   1.51000e-01    7.74000e+04   CA -  C interaction
+     17        18        1 ;   1.23500e-01    7.74000e+04    C -  O interaction
+     17        19        1 ;   1.32500e-01    7.74000e+04    C -  N interaction
+     19        20        1 ;   1.00000e-01    7.74000e+04    N - HN interaction
+     19        21        1 ;   1.45500e-01    7.74000e+04    N - CA interaction
+     21        22        1 ;   1.53000e-01    7.74000e+04   CA - CB interaction
+     21        23        1 ;   1.51000e-01    7.74000e+04   CA -  C interaction
+     23        24        1 ;   1.23500e-01    7.74000e+04    C -  O interaction
+     23        25        1 ;   1.32500e-01    7.74000e+04    C -  N interaction
+     25        26        1 ;   1.00000e-01    7.74000e+04    N - HN interaction
+     25        27        1 ;   1.45500e-01    7.74000e+04    N - CA interaction
+     27        28        1 ;   1.53000e-01    7.74000e+04   CA - CB interaction
+     27        29        1 ;   1.51000e-01    7.74000e+04   CA -  C interaction
+     29        30        1 ;   1.23500e-01    7.74000e+04    C -  O interaction
+     29        31        1 ;   1.32500e-01    7.74000e+04    C -  N interaction
+     31        32        1 ;   1.00000e-01    7.74000e+04    N - HN interaction
+     31        33        1 ;   1.45500e-01    7.74000e+04    N - CA interaction
+     33        34        1 ;   1.53000e-01    7.74000e+04   CA - CB interaction
+     33        35        1 ;   1.51000e-01    7.74000e+04   CA -  C interaction
+     35        36        1 ;   1.23500e-01    7.74000e+04    C -  O interaction
+     35        37        1 ;   1.32500e-01    7.74000e+04    C -  N interaction
+     37        38        1 ;   1.00000e-01    7.74000e+04    N - HN interaction
+     37        39        1 ;   1.45500e-01    7.74000e+04    N - CA interaction
+     39        40        1 ;   1.53000e-01    7.74000e+04   CA - CB interaction
+     39        41        1 ;   1.51000e-01    7.74000e+04   CA -  C interaction
+     41        42        1 ;   1.23500e-01    7.74000e+04    C -  O interaction
+     41        43        1 ;   1.32500e-01    7.74000e+04    C -  N interaction
+     43        44        1 ;   1.00000e-01    7.74000e+04    N - HN interaction
+     43        45        1 ;   1.45500e-01    7.74000e+04    N - CA interaction
+     45        46        1 ;   1.53000e-01    7.74000e+04   CA - CB interaction
+     45        47        1 ;   1.51000e-01    7.74000e+04   CA -  C interaction
+     47        48        1 ;   1.23500e-01    7.74000e+04    C -  O interaction
+     47        49        1 ;   1.32500e-01    7.74000e+04    C -  N interaction
+     49        50        1 ;   1.00000e-01    7.74000e+04    N - HN interaction
+     49        51        1 ;   1.45500e-01    7.74000e+04    N - CA interaction
+     51        52        1 ;   1.53000e-01    7.74000e+04   CA - CB interaction
+     51        53        1 ;   1.51000e-01    7.74000e+04   CA -  C interaction
+     53        54        1 ;   1.23500e-01    7.74000e+04    C -  O interaction
+     53        55        1 ;   1.32500e-01    7.74000e+04    C -  N interaction
+     55        56        1 ;   1.00000e-01    7.74000e+04    N - HN interaction
+     55        57        1 ;   1.45500e-01    7.74000e+04    N - CA interaction
+     57        58        1 ;   1.53000e-01    7.74000e+04   CA - CB interaction
+     57        59        1 ;   1.51000e-01    7.74000e+04   CA -  C interaction
+     59        60        1 ;   1.23500e-01    7.74000e+04    C -  O interaction
+
+[ angles ]
+;    ai        aj         ak    funct     k0             ka
+      2         1          3        1 ;   1.15000e+02    7.74000e+02   HN -  N - CA interaction
+      1         3          4        1 ;   1.08000e+02    7.74000e+02    N - CA - CB interaction
+      1         3          5        1 ;   1.11000e+02    7.74000e+02    N - CA -  C interaction
+      4         3          5        1 ;   1.13000e+02    7.74000e+02   CB - CA -  C interaction
+      3         5          6        1 ;   1.22000e+02    7.74000e+02   CA -  C -  O interaction
+      3         5          7        1 ;   1.16000e+02    7.74000e+02   CA -  C -  N interaction
+      5         7          9        1 ;   1.22000e+02    7.74000e+02    C -  N - CA interaction
+      8         7          9        1 ;   1.15000e+02    7.74000e+02   HN -  N - CA interaction
+      7         9         10        1 ;   1.08000e+02    7.74000e+02    N - CA - CB interaction
+      7         9         11        1 ;   1.11000e+02    7.74000e+02    N - CA -  C interaction
+     10         9         11        1 ;   1.13000e+02    7.74000e+02   CB - CA -  C interaction
+      9        11         12        1 ;   1.22000e+02    7.74000e+02   CA -  C -  O interaction
+      9        11         13        1 ;   1.16000e+02    7.74000e+02   CA -  C -  N interaction
+     11        13         15        1 ;   1.22000e+02    7.74000e+02    C -  N - CA interaction
+     14        13         15        1 ;   1.15000e+02    7.74000e+02   HN -  N - CA interaction
+     13        15         16        1 ;   1.08000e+02    7.74000e+02    N - CA - CB interaction
+     13        15         17        1 ;   1.11000e+02    7.74000e+02    N - CA -  C interaction
+     16        15         17        1 ;   1.13000e+02    7.74000e+02   CB - CA -  C interaction
+     15        17         18        1 ;   1.22000e+02    7.74000e+02   CA -  C -  O interaction
+     15        17         19        1 ;   1.16000e+02    7.74000e+02   CA -  C -  N interaction
+     17        19         21        1 ;   1.22000e+02    7.74000e+02    C -  N - CA interaction
+     20        19         21        1 ;   1.15000e+02    7.74000e+02   HN -  N - CA interaction
+     19        21         22        1 ;   1.08000e+02    7.74000e+02    N - CA - CB interaction
+     19        21         23        1 ;   1.11000e+02    7.74000e+02    N - CA -  C interaction
+     22        21         23        1 ;   1.13000e+02    7.74000e+02   CB - CA -  C interaction
+     21        23         24        1 ;   1.22000e+02    7.74000e+02   CA -  C -  O interaction
+     21        23         25        1 ;   1.16000e+02    7.74000e+02   CA -  C -  N interaction
+     23        25         27        1 ;   1.22000e+02    7.74000e+02    C -  N - CA interaction
+     26        25         27        1 ;   1.15000e+02    7.74000e+02   HN -  N - CA interaction
+     25        27         28        1 ;   1.08000e+02    7.74000e+02    N - CA - CB interaction
+     25        27         29        1 ;   1.11000e+02    7.74000e+02    N - CA -  C interaction
+     28        27         29        1 ;   1.13000e+02    7.74000e+02   CB - CA -  C interaction
+     27        29         30        1 ;   1.22000e+02    7.74000e+02   CA -  C -  O interaction
+     27        29         31        1 ;   1.16000e+02    7.74000e+02   CA -  C -  N interaction
+     29        31         33        1 ;   1.22000e+02    7.74000e+02    C -  N - CA interaction
+     32        31         33        1 ;   1.15000e+02    7.74000e+02   HN -  N - CA interaction
+     31        33         34        1 ;   1.08000e+02    7.74000e+02    N - CA - CB interaction
+     31        33         35        1 ;   1.11000e+02    7.74000e+02    N - CA -  C interaction
+     34        33         35        1 ;   1.13000e+02    7.74000e+02   CB - CA -  C interaction
+     33        35         36        1 ;   1.22000e+02    7.74000e+02   CA -  C -  O interaction
+     33        35         37        1 ;   1.16000e+02    7.74000e+02   CA -  C -  N interaction
+     35        37         39        1 ;   1.22000e+02    7.74000e+02    C -  N - CA interaction
+     38        37         39        1 ;   1.15000e+02    7.74000e+02   HN -  N - CA interaction
+     37        39         40        1 ;   1.08000e+02    7.74000e+02    N - CA - CB interaction
+     37        39         41        1 ;   1.11000e+02    7.74000e+02    N - CA -  C interaction
+     40        39         41        1 ;   1.13000e+02    7.74000e+02   CB - CA -  C interaction
+     39        41         42        1 ;   1.22000e+02    7.74000e+02   CA -  C -  O interaction
+     39        41         43        1 ;   1.16000e+02    7.74000e+02   CA -  C -  N interaction
+     41        43         45        1 ;   1.22000e+02    7.74000e+02    C -  N - CA interaction
+     44        43         45        1 ;   1.15000e+02    7.74000e+02   HN -  N - CA interaction
+     43        45         46        1 ;   1.08000e+02    7.74000e+02    N - CA - CB interaction
+     43        45         47        1 ;   1.11000e+02    7.74000e+02    N - CA -  C interaction
+     46        45         47        1 ;   1.13000e+02    7.74000e+02   CB - CA -  C interaction
+     45        47         48        1 ;   1.22000e+02    7.74000e+02   CA -  C -  O interaction
+     45        47         49        1 ;   1.16000e+02    7.74000e+02   CA -  C -  N interaction
+     47        49         51        1 ;   1.22000e+02    7.74000e+02    C -  N - CA interaction
+     50        49         51        1 ;   1.15000e+02    7.74000e+02   HN -  N - CA interaction
+     49        51         52        1 ;   1.08000e+02    7.74000e+02    N - CA - CB interaction
+     49        51         53        1 ;   1.11000e+02    7.74000e+02    N - CA -  C interaction
+     52        51         53        1 ;   1.13000e+02    7.74000e+02   CB - CA -  C interaction
+     51        53         54        1 ;   1.22000e+02    7.74000e+02   CA -  C -  O interaction
+     51        53         55        1 ;   1.16000e+02    7.74000e+02   CA -  C -  N interaction
+     53        55         57        1 ;   1.22000e+02    7.74000e+02    C -  N - CA interaction
+     56        55         57        1 ;   1.15000e+02    7.74000e+02   HN -  N - CA interaction
+     55        57         58        1 ;   1.08000e+02    7.74000e+02    N - CA - CB interaction
+     55        57         59        1 ;   1.11000e+02    7.74000e+02    N - CA -  C interaction
+     58        57         59        1 ;   1.13000e+02    7.74000e+02   CB - CA -  C interaction
+     57        59         60        1 ;   1.22000e+02    7.74000e+02   CA -  C -  O interaction
+
+[ dihedrals ]
+;    ai        aj         ak         al    funct   phi        cp            mult
+      1         3          5          4        1 ;   60.00    +4.38600e+01     1;    N - CA -  C - CB interaction
+      3         5          7          9        1 ;    0.00    +1.72860e+02     1;   CA -  C -  N - CA interaction
+      1         3          5          7        1 ;  180.00    -7.74000e-01     1;    N - CA -  C -  N interaction
+      5         7          9         11        1 ;  180.00    +7.74000e-01     1;    C -  N - CA -  C interaction
+      5         7          8          9        1 ;    0.00    +1.50000e+02     1;    C -  N - HN - CA interaction
+      3         5          6          7        1 ;    0.00    +1.50000e+02     1;   CA -  C -  O -  N interaction
+      5         6          7          8        1 ;    0.00    +0.00000e+00     0;    C -  O -  N - HN interaction
+      7         9         11         10        1 ;   60.00    +4.38600e+01     1;    N - CA -  C - CB interaction
+      9        11         13         15        1 ;    0.00    +1.72860e+02     1;   CA -  C -  N - CA interaction
+      7         9         11         13        1 ;  180.00    -7.74000e-01     1;    N - CA -  C -  N interaction
+     11        13         15         17        1 ;  180.00    +7.74000e-01     1;    C -  N - CA -  C interaction
+     11        13         14         15        1 ;    0.00    +1.50000e+02     1;    C -  N - HN - CA interaction
+      9        11         12         13        1 ;    0.00    +1.50000e+02     1;   CA -  C -  O -  N interaction
+     11        12         13         14        1 ;    0.00    +0.00000e+00     0;    C -  O -  N - HN interaction
+     13        15         17         16        1 ;   60.00    +4.38600e+01     1;    N - CA -  C - CB interaction
+     15        17         19         21        1 ;    0.00    +1.72860e+02     1;   CA -  C -  N - CA interaction
+     13        15         17         19        1 ;  180.00    -7.74000e-01     1;    N - CA -  C -  N interaction
+     17        19         21         23        1 ;  180.00    +7.74000e-01     1;    C -  N - CA -  C interaction
+     17        19         20         21        1 ;    0.00    +1.50000e+02     1;    C -  N - HN - CA interaction
+     15        17         18         19        1 ;    0.00    +1.50000e+02     1;   CA -  C -  O -  N interaction
+     17        18         19         20        1 ;    0.00    +0.00000e+00     0;    C -  O -  N - HN interaction
+     19        21         23         22        1 ;   60.00    +4.38600e+01     1;    N - CA -  C - CB interaction
+     21        23         25         27        1 ;    0.00    +1.72860e+02     1;   CA -  C -  N - CA interaction
+     19        21         23         25        1 ;  180.00    -7.74000e-01     1;    N - CA -  C -  N interaction
+     23        25         27         29        1 ;  180.00    +7.74000e-01     1;    C -  N - CA -  C interaction
+     23        25         26         27        1 ;    0.00    +1.50000e+02     1;    C -  N - HN - CA interaction
+     21        23         24         25        1 ;    0.00    +1.50000e+02     1;   CA -  C -  O -  N interaction
+     23        24         25         26        1 ;    0.00    +0.00000e+00     0;    C -  O -  N - HN interaction
+     25        27         29         28        1 ;   60.00    +4.38600e+01     1;    N - CA -  C - CB interaction
+     27        29         31         33        1 ;    0.00    +1.72860e+02     1;   CA -  C -  N - CA interaction
+     25        27         29         31        1 ;  180.00    -7.74000e-01     1;    N - CA -  C -  N interaction
+     29        31         33         35        1 ;  180.00    +7.74000e-01     1;    C -  N - CA -  C interaction
+     29        31         32         33        1 ;    0.00    +1.50000e+02     1;    C -  N - HN - CA interaction
+     27        29         30         31        1 ;    0.00    +1.50000e+02     1;   CA -  C -  O -  N interaction
+     29        30         31         32        1 ;    0.00    +0.00000e+00     0;    C -  O -  N - HN interaction
+     31        33         35         34        1 ;   60.00    +4.38600e+01     1;    N - CA -  C - CB interaction
+     33        35         37         39        1 ;    0.00    +1.72860e+02     1;   CA -  C -  N - CA interaction
+     31        33         35         37        1 ;  180.00    -7.74000e-01     1;    N - CA -  C -  N interaction
+     35        37         39         41        1 ;  180.00    +7.74000e-01     1;    C -  N - CA -  C interaction
+     35        37         38         39        1 ;    0.00    +1.50000e+02     1;    C -  N - HN - CA interaction
+     33        35         36         37        1 ;    0.00    +1.50000e+02     1;   CA -  C -  O -  N interaction
+     35        36         37         38        1 ;    0.00    +0.00000e+00     0;    C -  O -  N - HN interaction
+     37        39         41         40        1 ;   60.00    +4.38600e+01     1;    N - CA -  C - CB interaction
+     39        41         43         45        1 ;    0.00    +1.72860e+02     1;   CA -  C -  N - CA interaction
+     37        39         41         43        1 ;  180.00    -7.74000e-01     1;    N - CA -  C -  N interaction
+     41        43         45         47        1 ;  180.00    +7.74000e-01     1;    C -  N - CA -  C interaction
+     41        43         44         45        1 ;    0.00    +1.50000e+02     1;    C -  N - HN - CA interaction
+     39        41         42         43        1 ;    0.00    +1.50000e+02     1;   CA -  C -  O -  N interaction
+     41        42         43         44        1 ;    0.00    +0.00000e+00     0;    C -  O -  N - HN interaction
+     43        45         47         46        1 ;   60.00    +4.38600e+01     1;    N - CA -  C - CB interaction
+     45        47         49         51        1 ;    0.00    +1.72860e+02     1;   CA -  C -  N - CA interaction
+     43        45         47         49        1 ;  180.00    -7.74000e-01     1;    N - CA -  C -  N interaction
+     47        49         51         53        1 ;  180.00    +7.74000e-01     1;    C -  N - CA -  C interaction
+     47        49         50         51        1 ;    0.00    +1.50000e+02     1;    C -  N - HN - CA interaction
+     45        47         48         49        1 ;    0.00    +1.50000e+02     1;   CA -  C -  O -  N interaction
+     47        48         49         50        1 ;    0.00    +0.00000e+00     0;    C -  O -  N - HN interaction
+     49        51         53         52        1 ;   60.00    +4.38600e+01     1;    N - CA -  C - CB interaction
+     51        53         55         57        1 ;    0.00    +1.72860e+02     1;   CA -  C -  N - CA interaction
+     49        51         53         55        1 ;  180.00    -7.74000e-01     1;    N - CA -  C -  N interaction
+     53        55         57         59        1 ;  180.00    +7.74000e-01     1;    C -  N - CA -  C interaction
+     53        55         56         57        1 ;    0.00    +1.50000e+02     1;    C -  N - HN - CA interaction
+     51        53         54         55        1 ;    0.00    +1.50000e+02     1;   CA -  C -  O -  N interaction
+     53        54         55         56        1 ;    0.00    +0.00000e+00     0;    C -  O -  N - HN interaction
+     55        57         59         58        1 ;   60.00    +4.38600e+01     1;    N - CA -  C - CB interaction
+
+[ exclusions ]
+; explicitly exclude all nonbonded HN-O interactions that are 3 bonds apart.
+; exclude all 1-2 1-3 interactions
+;    ai        aj
+      1         4 ;   N - CB interaction
+      1         5 ;   N -  C interaction
+      4         5 ;  CB -  C interaction
+      3         6 ;  CA -  O interaction
+      2         3 ;  HN - CA interaction
+      3         7 ;  CA -  N interaction
+      6         7 ;   O -  N interaction
+      5         9 ;   C - CA interaction
+      5         8 ;   C - HN interaction
+      6         8 ;   O - HN interaction
+      7        10 ;   N - CB interaction
+      7        11 ;   N -  C interaction
+     10        11 ;  CB -  C interaction
+      9        12 ;  CA -  O interaction
+      8         9 ;  HN - CA interaction
+      9        13 ;  CA -  N interaction
+     12        13 ;   O -  N interaction
+     11        15 ;   C - CA interaction
+     11        14 ;   C - HN interaction
+     12        14 ;   O - HN interaction
+     13        16 ;   N - CB interaction
+     13        17 ;   N -  C interaction
+     16        17 ;  CB -  C interaction
+     15        18 ;  CA -  O interaction
+     14        15 ;  HN - CA interaction
+     15        19 ;  CA -  N interaction
+     18        19 ;   O -  N interaction
+     17        21 ;   C - CA interaction
+     17        20 ;   C - HN interaction
+     18        20 ;   O - HN interaction
+     19        22 ;   N - CB interaction
+     19        23 ;   N -  C interaction
+     22        23 ;  CB -  C interaction
+     21        24 ;  CA -  O interaction
+     20        21 ;  HN - CA interaction
+     21        25 ;  CA -  N interaction
+     24        25 ;   O -  N interaction
+     23        27 ;   C - CA interaction
+     23        26 ;   C - HN interaction
+     24        26 ;   O - HN interaction
+     25        28 ;   N - CB interaction
+     25        29 ;   N -  C interaction
+     28        29 ;  CB -  C interaction
+     27        30 ;  CA -  O interaction
+     26        27 ;  HN - CA interaction
+     27        31 ;  CA -  N interaction
+     30        31 ;   O -  N interaction
+     29        33 ;   C - CA interaction
+     29        32 ;   C - HN interaction
+     30        32 ;   O - HN interaction
+     31        34 ;   N - CB interaction
+     31        35 ;   N -  C interaction
+     34        35 ;  CB -  C interaction
+     33        36 ;  CA -  O interaction
+     32        33 ;  HN - CA interaction
+     33        37 ;  CA -  N interaction
+     36        37 ;   O -  N interaction
+     35        39 ;   C - CA interaction
+     35        38 ;   C - HN interaction
+     36        38 ;   O - HN interaction
+     37        40 ;   N - CB interaction
+     37        41 ;   N -  C interaction
+     40        41 ;  CB -  C interaction
+     39        42 ;  CA -  O interaction
+     38        39 ;  HN - CA interaction
+     39        43 ;  CA -  N interaction
+     42        43 ;   O -  N interaction
+     41        45 ;   C - CA interaction
+     41        44 ;   C - HN interaction
+     42        44 ;   O - HN interaction
+     43        46 ;   N - CB interaction
+     43        47 ;   N -  C interaction
+     46        47 ;  CB -  C interaction
+     45        48 ;  CA -  O interaction
+     44        45 ;  HN - CA interaction
+     45        49 ;  CA -  N interaction
+     48        49 ;   O -  N interaction
+     47        51 ;   C - CA interaction
+     47        50 ;   C - HN interaction
+     48        50 ;   O - HN interaction
+     49        52 ;   N - CB interaction
+     49        53 ;   N -  C interaction
+     52        53 ;  CB -  C interaction
+     51        54 ;  CA -  O interaction
+     50        51 ;  HN - CA interaction
+     51        55 ;  CA -  N interaction
+     54        55 ;   O -  N interaction
+     53        57 ;   C - CA interaction
+     53        56 ;   C - HN interaction
+     54        56 ;   O - HN interaction
+     55        58 ;   N - CB interaction
+     55        59 ;   N -  C interaction
+     58        59 ;  CB -  C interaction
+     57        60 ;  CA -  O interaction
+     56        57 ;  HN - CA interaction
