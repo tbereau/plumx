@@ -30,6 +30,9 @@ cat $1 | awk 'BEGIN{res=1; restemp=1; npart=1}
         if ($6 != restemp) { res++; restemp = $6}
 	printf "%5d%-4s  %4s%5d %7.3f %7.3f %7.3f\n", res, $4, $3, npart, $7/10., $8/10., $9/10.;
         npart++;
+        if (npart == 100000) {
+            npart = 0;
+        }
     }
 }'
 printf " %9.5f %9.5f %9.5f\n" $2 $3 $4;
