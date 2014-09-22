@@ -33,6 +33,9 @@ cat $1 | awk 'BEGIN{res=1; restemp=1; npart=1}
         if (npart == 100000) {
             npart = 0;
         }
+        if (res == 100000) {
+            res = 0;
+        }
     }
 }'
 printf " %9.5f %9.5f %9.5f\n" $2 $3 $4;
