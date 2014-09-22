@@ -257,7 +257,7 @@ my @ak_glypro  = (0,6,4, 7,0,5);
 my @al_xxxgly  = (4,9,7,10,9,7);
 my @al_glygly  = (0,8,6, 9,8,6);
 my @al_glyxxx  = (0,8,6,10,8,6);
-my @al_glypro  = (0,7,6,10,0,6);
+my @al_glypro  = (0,7,6, 9,0,6);
 my @ai_pro     = (1,2,1, 4,4,2);
 my @aj_pro     = (2,4,2, 6,6,4);
 my @ak_proxxx  = (4,6,4, 8,7,5);
@@ -307,11 +307,9 @@ for (my $i=0; $i < $number_of_chains; $i++)
                 if ( $k==1) {
                     # omega of proline is specific
                     if ($seqi[$j+1] eq "P") {
-                        if ($k != 4 ) {
-                            printf(" %6d    %6d     %6d     %6d     %4d ;   %6.2f    %+6.5e    %2d;  %2s - %2s - %2s - %2s interaction\n",
-                                   $at_count+$ai_pro[$k],$at_count+$aj_pro[$k],$at_count+$ak_propro[$k],$at_count+$al_propro[$k],1,
-                                   @dihedrallist[$k],$komega_pro,$mult_omega_pro,@name[@ai[$k]-1],@name[@aj2[$k]-1],@name[@ak2[$k]-1],@name[@al2[$k]-1]);
-                        }
+                        printf(" %6d    %6d     %6d     %6d     %4d ;   %6.2f    %+6.5e    %2d;  %2s - %2s - %2s - %2s interaction\n",
+                               $at_count+$ai_pro[$k],$at_count+$aj_pro[$k],$at_count+$ak_propro[$k],$at_count+$al_propro[$k],1,
+                               @dihedrallist[$k],$komega_pro,$mult_omega_pro,@name[@ai[$k]-1],@name[@aj2[$k]-1],@name[@ak2[$k]-1],@name[@al2[$k]-1]);
                     } else {
                         printf(" %6d    %6d     %6d     %6d     %4d ;   %6.2f    %+6.5e    %2d;  %2s - %2s - %2s - %2s interaction\n",
                                $at_count+$ai_pro[$k],$at_count+$aj_pro[$k],$at_count+$ak_proxxx[$k],$at_count+$al_proxxx[$k],1,
@@ -319,9 +317,11 @@ for (my $i=0; $i < $number_of_chains; $i++)
                     }
                 } else {
                     if ($seqi[$j+1] eq "P") {
-                        printf(" %6d    %6d     %6d     %6d     %4d ;   %6.2f    %+6.5e    %2d;  %2s - %2s - %2s - %2s interaction\n",
-                               $at_count+$ai_pro[$k],$at_count+$aj_pro[$k],$at_count+$ak_propro[$k],$at_count+$al_propro[$k],1,
-                               @dihedrallist[$k],$kdih[$k],$multiplicities[$k],@name[@ai[$k]-1],@name[@aj2[$k]-1],@name[@ak2[$k]-1],@name[@al2[$k]-1]);
+                        if ($k != 4 ) {
+                            printf(" %6d    %6d     %6d     %6d     %4d ;   %6.2f    %+6.5e    %2d;  %2s - %2s - %2s - %2s interaction\n",
+                                   $at_count+$ai_pro[$k],$at_count+$aj_pro[$k],$at_count+$ak_propro[$k],$at_count+$al_propro[$k],1,
+                                   @dihedrallist[$k],$kdih[$k],$multiplicities[$k],@name[@ai[$k]-1],@name[@aj2[$k]-1],@name[@ak2[$k]-1],@name[@al2[$k]-1]);
+                        }
                     } elsif ($seqi[$j+1] eq "G") {
                         printf(" %6d    %6d     %6d     %6d     %4d ;   %6.2f    %+6.5e    %2d;  %2s - %2s - %2s - %2s interaction\n",
                                $at_count+$ai_pro[$k],$at_count+$aj_pro[$k],$at_count+$ak_proxxx[$k],$at_count+$al_progly[$k],1,
